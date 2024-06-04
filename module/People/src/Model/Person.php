@@ -5,7 +5,7 @@ namespace People\Model;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
-class Album implements InputFilterAwareInterface
+class Person implements InputFilterAwareInterface
 {
     public $id;
     public $first_name;
