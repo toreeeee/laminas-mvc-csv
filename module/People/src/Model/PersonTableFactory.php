@@ -6,7 +6,6 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Person\Model\PersonTable;
 use Psr\Container\ContainerInterface;
 
 class PersonTableFactory implements FactoryInterface

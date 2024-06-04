@@ -1,8 +1,10 @@
 <?php
 
+namespace People\Controller;
+
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Person\Model\PersonTable;
+use People\Model\PersonTable;
 
 class PeopleController extends AbstractActionController
 {
@@ -15,7 +17,7 @@ class PeopleController extends AbstractActionController
 
     public function indexAction() {
         return new ViewModel([
-            "people" => $this->table->fetchAll(),
+            "people" => "$this->table->fetchAll()",
         ]);
     }
 }

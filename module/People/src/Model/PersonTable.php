@@ -1,6 +1,6 @@
 <?php
 
-namespace Person\Model;
+namespace People\Model;
 
 use Laminas\Db\TableGateway\TableGatewayInterface;
 
