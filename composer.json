@@ -36,7 +36,7 @@
       "Album\\": "module/Album/src/",
       "Person\\": "module/Person/src",
       "AlbumTest\\": "module/Album/test/",
-      "blog\\": "module/Blog"
+      "Blog\\": "module/Blog/src"
     }
   },
   "autoload-dev": {
