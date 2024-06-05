@@ -9,7 +9,7 @@ class PostRepository implements PostRepositoryInterface
     private $data = [
         1 => [
             'id' => 1,
-            'title' => 'Hello World #1',
+            'title' => 'Hello World #11',
             'text' => 'This is our first blog post!',
         ],
         2 => [
