@@ -1,6 +1,6 @@
 <?php
 
-namespace People\Model;
+namespace Album\Controller\Person\src\Model;
 
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;

@@ -1,7 +1,6 @@
 <?php
 
-
-namespace People;
+namespace Album\Controller\Person\src;
 
 use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 

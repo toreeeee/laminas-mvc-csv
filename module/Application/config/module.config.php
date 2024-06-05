@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Album\Controller\Person\src\Controller\PersonController;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
-use Album\Controller\AlbumController;
 
 
 return [
@@ -18,7 +18,7 @@ return [
                 'options' => [
                     'route' => '/',
                     'defaults' => [
-                        'controller' => AlbumController::class,
+                        'controller' => PersonController::class,
                         'action' => 'index',
                     ],
                 ],

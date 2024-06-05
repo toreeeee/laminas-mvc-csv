@@ -1,6 +1,6 @@
 <?php
 
-namespace People\Model;
+namespace Album\Controller\Person\src\Model;
 
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\ResultSet\ResultSet;

@@ -1,31 +1,31 @@
 <?php
 
-namespace People;
+namespace Person;
 
+use Album\Controller\Person\src\Model\PersonTableFactory;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-use People\Model\PersonTableFactory;
 
 
 return [
     'controllers' => [
         'factories' => [
-            Controller\PeopleController::class => ReflectionBasedAbstractFactory::class
+            \Album\Controller\Person\src\Controller\PersonController::class => ReflectionBasedAbstractFactory::class
         ],
     ],
     // The following section is new and should be added to your file:
     'router' => [
         'routes' => [
-            'people' => [
+            'person' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/people[/:action[/:id]]',
+                    'route' => '/person[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\PeopleController::class,
+                        'controller' => \Album\Controller\Person\src\Controller\PersonController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -34,12 +34,12 @@ return [
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'album' => __DIR__ . '/../view',
+            'person' => __DIR__ . '/../view',
         ],
     ],
     'service_manager' => [
         'factories' => [
-            Model\PersonTable::class => PersonTableFactory::class,
+            \Album\Controller\Person\src\Model\PersonTable::class => PersonTableFactory::class,
         ],
     ]
 ];
