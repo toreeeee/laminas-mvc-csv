@@ -16,5 +16,4 @@ return [
     'Laminas\Validator',
     'Application',
     "Album",
-    "Person"
 ];
