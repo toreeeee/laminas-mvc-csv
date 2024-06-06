@@ -2,7 +2,13 @@
 
 namespace Blog;
 
+use Blog\Factory\LaminasDbSqlCommandFactory;
+use Blog\Factory\LaminasDbSqlRepositoryFactory;
+use Blog\Factory\ListControllerFactory;
+use Blog\Factory\WriteControllerFactory;
+use Laminas\Form\Factory;
 use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
 
@@ -10,15 +16,19 @@ return [
     "service_manager" => [
         "aliases" => [
             Model\PostRepositoryInterface::class => Model\LaminasDbSqlRepository::class,
+            Model\PostCommandInterface::class => Model\LaminasDbSqlCommand::class
         ],
         'factories' => [
             Model\PostRepository::class => InvokableFactory::class,
-            Model\LaminasDbSqlRepository::class => Factory\LaminasDbSqlRepositoryFactory::class,
-        ],
+            Model\LaminasDbSqlRepository::class => LaminasDbSqlRepositoryFactory::class,
+            Model\PostCommand::class => InvokableFactory::class,
+            Model\LaminasDbSqlCommand::class => LaminasDbSqlCommandFactory::class,
+            ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\ListController::class => Factory\ListControllerFactory::class,
+            Controller\ListController::class => ListControllerFactory::class,
+            Controller\WriteController::class => WriteControllerFactory::class,
         ],
     ],
     // This lines opens the configuration for the RouteManager
@@ -39,6 +49,44 @@ return [
                         'controller' => Controller\ListController::class,
                         'action' => 'index',
                     ],
+                ],
+                "may_terminate" => true,
+                'child_routes'  => [
+                    'detail' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => '/:id',
+                            'defaults' => [
+                                'action' => 'detail',
+                            ],
+                            'constraints' => [
+                                'id' => '\d+',
+                            ],
+                        ],
+                    ],
+                    'add' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route'    => '/add',
+                            'defaults' => [
+                                'controller' => Controller\WriteController::class,
+                                'action'     => 'add',
+                            ],
+                        ],
+                    ],
+                    "edit" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/edit/:id",
+                            "defaults" => [
+                                "controller" => Controller\WriteController::class,
+                                "action" => "edit",
+                            ],
+                            "constraints" => [
+                                "id" => "[1-9]\d*",
+                            ]
+                        ]
+                    ]
                 ],
             ],
         ],
