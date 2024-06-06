@@ -6,6 +6,7 @@ use Blog\Factory\DeleteControllerFactory;
 use Blog\Factory\LaminasDbSqlCommandFactory;
 use Blog\Factory\LaminasDbSqlRepositoryFactory;
 use Blog\Factory\ListControllerFactory;
+use Blog\Factory\PostControllerFactory;
 use Blog\Factory\WriteControllerFactory;
 use Laminas\Form\Factory;
 use Laminas\Router\Http\Literal;
@@ -31,6 +32,7 @@ return [
             Controller\ListController::class => ListControllerFactory::class,
             Controller\WriteController::class => WriteControllerFactory::class,
             Controller\DeleteController::class => DeleteControllerFactory::class,
+            Controller\PostController::class => PostControllerFactory::class
         ],
     ],
     // This lines opens the configuration for the RouteManager
@@ -59,7 +61,8 @@ return [
                         'options' => [
                             'route'    => '/:id',
                             'defaults' => [
-                                'action' => 'detail',
+                                'action' => 'index',
+                                "controller" => Controller\PostController::class
                             ],
                             'constraints' => [
                                 'id' => '\d+',

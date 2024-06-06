@@ -13,6 +13,7 @@ $text->setAttribute('placeholder', 'Post content');
 $submit = $form->get('submit');
 $submit->setValue($this->submitLabel);
 $submit->setAttribute('class', 'btn btn-primary');
+$submit->setAttribute("style", "margin-top: 12px;");
 
 $form->prepare();
 

@@ -1,0 +1,17 @@
+<div class="list-group-item">
+    <div style="border: gray 1px solid; padding: 1rem; border-radius: 8px; margin-bottom: 12px;">
+        <h1><?php echo $this->post->getTitle(); ?></h1>
+        <p>
+            <?= $this->post->getText() ?>
+        </p>
+    </div>
+
+    <div class="btn-group" role="group" aria-label="Post actions">
+        <a class="btn btn-xs btn-default" href="<?= $this->url("blog/edit", [
+            "id" => $this->post->getId(),
+        ]) ?>">Edit</a>
+        <a class="btn btn-xs btn-danger" href="<?= $this->url("blog/delete", [
+            "id" => $this->post->getId(),
+        ]) ?>">Delete</a>
+    </div>
+</div>
