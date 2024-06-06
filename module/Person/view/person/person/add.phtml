@@ -1,37 +1,10 @@
-<h1>add</h1>
+<h1>Add Person</h1>
 
 <?php
 
 $form = $this->form;
-
-$form->setAttribute("class", "d-flex flex-column gap-2");
-
-$firstName = $form->get('first_name');
-$firstName->setAttribute('class', 'form-control');
-$firstName->setAttribute('placeholder', 'Max');
-
-$lastName = $form->get('last_name');
-$lastName->setAttribute('class', 'form-control me-2');
-$lastName->setAttribute('placeholder', 'Mustermann');
-
-$salary = $form->get('salary');
-$salary->setAttribute('class', 'form-control');
-
-$birthday = $form->get('birthday');
-$birthday->getDayElement()->setAttribute('class', 'form-select w-auto');
-$birthday->getMonthElement()->setAttribute('class', 'form-select w-auto');
-$birthday->getYearElement()->setAttribute('class', 'form-select w-auto');
-$birthday->setAttribute('class', 'form-control d-flex');
-//$birthday->getFieldsetElement()->setAttribute('class', 'form-control d-flex');
-
-
-// This provides CSS classes for the submit button:
-$submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-primary ms-2');
-
-$form->setAttribute('action', $this->url('person/add', ['action' => 'add']));
-$form->prepare();
-
-echo $this->form()->openTag($this->form);
-echo $this->formCollection($this->form);
-echo $this->form()->closeTag();
+$form->setAttribute('action', $this->url('person/add', [], true));
+echo $this->partial('person/person/form', [
+    'form' => $form,
+    'submitLabel' => 'Add',
+]);

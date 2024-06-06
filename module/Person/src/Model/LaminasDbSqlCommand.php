@@ -86,7 +86,7 @@ class LaminasDbSqlCommand implements PersonCommandInterface
         }
 
         $delete = new Delete('person');
-        $delete->where(['id = ?' => parseError1()->getId()]);
+        $delete->where(['id = ?' => $person->getId()]);
 
         $sql = new Sql($this->db);
         $statement = $sql->prepareStatementForSqlObject($delete);

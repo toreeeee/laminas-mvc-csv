@@ -1,1 +1,15 @@
-<h1>delete</h1>
+<h1>Delete person</h1>
+
+<p>Are you sure you want to delete the following person?</p>
+
+<ul class="list-group">
+    <li class="list-group-item"><?= $this->escapeHtml($this->person->getFullName()) ?></li>
+</ul>
+
+<form action="<?php $this->url('person/delete', [], true) ?>" method="post">
+    <input type="hidden" name="id" value="<?= $this->escapeHtmlAttr($this->person->getId()) ?>" />
+<div class="mt-2">
+    <input class="btn btn-default" type="submit" name="confirm" value="Cancel" />
+    <input class="btn btn-danger" type="submit" name="confirm" value="Delete" />
+</div>
+</form>

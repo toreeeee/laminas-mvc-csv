@@ -2,7 +2,9 @@
 
 namespace Person\Controller;
 
+use InvalidArgumentException;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Person\Form\PersonForm;
 use Person\Model\Person;
 use Person\Model\PersonCommandInterface;
@@ -27,14 +29,58 @@ class PersonController extends AbstractActionController
 
     public function editAction()
     {
-        return [];
+        $request = $this->getRequest();
+
+        $id = $this->params()->fromRoute('id', 0);
+
+        $person = $this->personRepository->getById($id);
+
+        $form = new PersonForm();
+        $form->bind($person);
+        $form->get("submit")->setAttribute("value", "Save");
+
+        if (!$request->isPost()) {
+            return ["form" => $form];
+        }
+
+        $form->setData($request->getPost());
+
+        if (!$form->isValid()) {
+            return ['form' => $form];
+        }
+
+        $this->command->updatePerson($form->getData());
+
+        return $this->redirect()->toRoute('person',);
     }
 
     public function deleteAction()
     {
-        $form = new PersonForm();
+        $id = $this->params()->fromRoute('id');
+        if (!$id) {
+            return $this->redirect()->toRoute('person');
+        }
 
-        return ["form" => $form];
+        try {
+            $person = $this->personRepository->getById($id);
+        } catch (InvalidArgumentException $ex) {
+            return $this->redirect()->toRoute('blog');
+        }
+
+        $request = $this->getRequest();
+        if (!$request->isPost()) {
+            return new ViewModel(['person' => $person]);
+        }
+
+        if (
+            $id != $request->getPost('id')
+            || 'Delete' !== $request->getPost('confirm', 'no')
+        ) {
+            return $this->redirect()->toRoute('person');
+        }
+
+        $person = $this->command->deletePerson($person);
+        return $this->redirect()->toRoute('person');
     }
 
     public function addAction()
