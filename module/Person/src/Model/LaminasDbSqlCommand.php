@@ -1,6 +1,7 @@
 <?php
 
-use Blog\Model\Post;
+namespace Person\Model;
+
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Delete;

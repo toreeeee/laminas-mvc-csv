@@ -14,10 +14,11 @@ return [
     "service_manager" => [
         "aliases" => [
             Model\PersonRepositoryInterface::class => Model\LaminasDbSqlRepository::class,
-//            Model\PersonCommandInterface::class => Model\Comm::class,
+            Model\PersonCommandInterface::class => Model\LaminasDbSqlCommand::class,
         ],
         "factories" => [
             Model\LaminasDbSqlRepository::class => LaminasDbSqlRepositoryFactory::class,
+            Model\LaminasDbSqlCommand::class => LaminasDbSqlCommandFactory::class,
         ]
     ],
     'controllers' => [
@@ -29,7 +30,7 @@ return [
         // Open configuration for all possible routes
         'routes' => [
             // Define a new route called "blog"
-            'blog' => [
+            'person' => [
                 // Define a "literal" route type:
                 'type' => Literal::class,
                 // Configure the route itself
@@ -45,7 +46,39 @@ return [
                 ],
                 "may_terminate" => true,
                 'child_routes'  => [
-
+                    "add" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/add",
+                            "defaults" => [
+                                "action" => "add",
+                            ],
+                        ]
+                    ],
+                    "edit" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/:id/edit",
+                            "defaults" => [
+                                "action" => "edit",
+                            ],
+                            "constraints" => [
+                                "id" => "[1-9]\d*",
+                            ]
+                        ]
+                    ],
+                    "delete" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/:id/delete",
+                            "defaults" => [
+                                "action" => "delete",
+                            ],
+                            "constraints" => [
+                                "id" => "[1-9]\d*",
+                            ]
+                        ]
+                    ],
                 ],
             ],
         ],

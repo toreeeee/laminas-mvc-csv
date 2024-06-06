@@ -4,11 +4,26 @@ namespace Person\Model;
 
 class Person
 {
-    private int | null $id;
-    private string $first_name;
-    private string $last_name;
-    private string $birthday;
-    private float $salary;
+    /**
+     * @var int|null
+     */
+    private $id;
+    /**
+     * @var string
+     */
+    private $first_name;
+    /**
+     * @var string
+     */
+    private $last_name;
+    /**
+     * @var string
+     */
+    private $birthday;
+    /**
+     * @var float
+     */
+    private $salary;
 
     public function __construct(
         string $firstName,

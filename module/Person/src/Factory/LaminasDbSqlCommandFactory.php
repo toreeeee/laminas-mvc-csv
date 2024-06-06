@@ -4,6 +4,7 @@ namespace Person\Factory;
 
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Person\Model\LaminasDbSqlCommand;
 use Psr\Container\ContainerInterface;
 
 class LaminasDbSqlCommandFactory implements FactoryInterface
