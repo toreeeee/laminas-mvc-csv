@@ -1,8 +1,10 @@
 <?php
 
+namespace Person\Model;
+
 interface PersonRepositoryInterface
 {
-    function getById(int $id): Person;
+    public function getById(int $id): Person;
 
-    function getAll(): array;
+    public function getAll(): array;
 }
