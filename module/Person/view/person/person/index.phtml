@@ -1,4 +1,4 @@
-<h1>person</h1>
+<h1>Personen</h1>
 
 
 <table class="table">
@@ -14,13 +14,13 @@
     <?php foreach ($this->persons as $person): ?>
     <tr>
         <td>
-            <?= $person->getFullName() ?>
+            <?= $this->escapeHtml($person->getFullName()) ?>
         </td>
         <td>
-            <?= $person->getBirthday() ?>
+            <?= $this->escapeHtml($person->getBirthday()) ?>
         </td>
         <td>
-            <?= $person->getSalary() ?>
+            <?= $this->escapeHtml($person->getSalary()) ?>
         </td>
         <td class="flex-row justify-content-end d-flex gap-1">
             <a type="button" class="btn btn-dark" href="<?= $this->url("person/edit", [
