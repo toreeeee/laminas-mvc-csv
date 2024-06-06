@@ -2,4 +2,10 @@
 
 namespace Person;
 
-return [];
+return [
+    'controllers' => [
+        'factories' => [
+
+        ]
+    ]
+];
