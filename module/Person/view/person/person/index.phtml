@@ -1,0 +1,27 @@
+<h1>person</h1>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Geburtstag</th>
+        <th scope="col">Gehalt</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->persons as $person): ?>
+    <tr>
+        <td>
+            <?= $person->getFullName() ?>
+        </td>
+        <td>
+            <?= $person->getBirthday() ?>
+        </td>
+        <td>
+            <?= $person->getSalary() ?>
+        </td>
+    </tr>
+    <?php endforeach ?>
+    </tbody>
+</table>

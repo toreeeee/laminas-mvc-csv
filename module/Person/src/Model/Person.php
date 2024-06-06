@@ -5,8 +5,8 @@ namespace Person\Model;
 class Person
 {
     private int | null $id;
-    private string $firstName;
-    private string $lastName;
+    private string $first_name;
+    private string $last_name;
     private string $birthday;
     private float $salary;
 
@@ -17,8 +17,8 @@ class Person
         float $salary,
         int | null $id = null
     ) {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->first_name = $firstName;
+        $this->last_name = $lastName;
         $this->birthday = $birthday;
         $this->salary = $salary;
         $this->id = $id;
@@ -29,14 +29,19 @@ class Person
         return $this->id;
     }
 
+    public function getFullName(): string
+    {
+        return sprintf("%s %s", $this->first_name, $this->last_name);
+    }
+
     public function getFirstName(): string
     {
-        return $this->firstName;
+        return $this->first_name;
     }
 
     public function getLastName(): string
     {
-        return $this->lastName;
+        return $this->last_name;
     }
 
     public function getBirthday(): string

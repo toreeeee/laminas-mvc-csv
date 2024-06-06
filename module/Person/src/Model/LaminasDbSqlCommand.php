@@ -21,7 +21,7 @@ class LaminasDbSqlCommand implements PersonCommandInterface
 
     public function insertPerson(Person $person): Person
     {
-        $insert = new Insert('persons');
+        $insert = new Insert('person');
         $insert->values([
             'first_name' => $person->getFirstName(),
             'last_name' => $person->getLastName(),
@@ -56,7 +56,7 @@ class LaminasDbSqlCommand implements PersonCommandInterface
             throw new RuntimeException('Cannot update person; missing identifier');
         }
 
-        $update = new Update('posts');
+        $update = new Update('person');
         $update->set([
             'first_name' => $person->getFirstName(),
             'last_name' => $person->getLastName(),
@@ -71,7 +71,7 @@ class LaminasDbSqlCommand implements PersonCommandInterface
 
         if (!$result instanceof ResultInterface) {
             throw new RuntimeException(
-                'Database error occurred during blog post update operation'
+                'Database error occurred during person update operation'
             );
         }
 
@@ -81,10 +81,10 @@ class LaminasDbSqlCommand implements PersonCommandInterface
     public function deletePerson(Person $person): bool
     {
         if (!$person->getId()) {
-            throw new RuntimeException('Cannot delete post; missing identifier');
+            throw new RuntimeException('Cannot delete person; missing identifier');
         }
 
-        $delete = new Delete('posts');
+        $delete = new Delete('person');
         $delete->where(['id = ?' => parseError1()->getId()]);
 
         $sql = new Sql($this->db);

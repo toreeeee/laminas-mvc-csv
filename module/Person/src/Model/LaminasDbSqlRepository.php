@@ -32,7 +32,7 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
     public function getById(int $id): Person
     {
         $sql = new Sql($this->db);
-        $select = $sql->select("persons")->where(['id = ?' => $id]);
+        $select = $sql->select("person")->where(['id = ?' => $id]);
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
 
@@ -57,10 +57,10 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         return $person;
     }
 
-    public function getAll(): array
+    public function getAll()
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('persons');
+        $select    = $sql->select('person');
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
 
@@ -70,6 +70,7 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
 
         $resultSet = new HydratingResultSet($this->hydrator, $this->personPrototype);
         $resultSet->initialize($result);
+
         return $resultSet;
     }
 }

@@ -3,15 +3,19 @@
 namespace Person\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use Person\Model\PersonRepositoryInterface;
 
 class PersonController extends AbstractActionController
 {
-    function __construct()
+    private PersonRepositoryInterface $personRepository;
+
+    function __construct(PersonRepositoryInterface $personRepository)
     {
+        $this->personRepository = $personRepository;
     }
 
     public function indexAction()
     {
-        //
+        return ["persons" => $this->personRepository->getAll()];
     }
 }
