@@ -2,6 +2,7 @@
 
 namespace Blog;
 
+use Blog\Factory\DeleteControllerFactory;
 use Blog\Factory\LaminasDbSqlCommandFactory;
 use Blog\Factory\LaminasDbSqlRepositoryFactory;
 use Blog\Factory\ListControllerFactory;
@@ -29,6 +30,7 @@ return [
         'factories' => [
             Controller\ListController::class => ListControllerFactory::class,
             Controller\WriteController::class => WriteControllerFactory::class,
+            Controller\DeleteController::class => DeleteControllerFactory::class,
         ],
     ],
     // This lines opens the configuration for the RouteManager
@@ -86,6 +88,19 @@ return [
                                 "id" => "[1-9]\d*",
                             ]
                         ]
+                    ],
+                    "delete" => [
+                        "type" => Segment::class,
+                        'options' => [
+                            'route' => '/delete/:id',
+                            'defaults' => [
+                                'controller' => Controller\DeleteController::class,
+                                'action'     => 'delete',
+                            ],
+                            'constraints' => [
+                                'id' => '[1-9]\d*',
+                            ],
+                        ],
                     ]
                 ],
             ],
