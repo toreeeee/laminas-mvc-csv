@@ -10,6 +10,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Update;
 use Person\Model\Person;
 use Person\Model\PersonCommandInterface;
+use RuntimeException;
 
 class LaminasDbSqlCommand implements PersonCommandInterface
 {
