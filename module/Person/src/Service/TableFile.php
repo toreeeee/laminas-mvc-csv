@@ -47,8 +47,12 @@ class TableFile
     {
         return array_map(function ($row) {
             $columns = $row->getColumns();
-            if ($columns[count($columns) - 1] !== implode(", ", $row->getErrors())) {
-                $row->addColumn(implode(", ", $row->getErrors()));
+
+            $errorMessage = implode(", ", $row->getErrors());
+
+            // check if error message doesn't already exist on output
+            if ($columns[count($columns) - 1] !== $errorMessage) {
+                $row->addColumn($errorMessage);
             }
 
             return $row;
