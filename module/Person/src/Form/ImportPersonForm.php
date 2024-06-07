@@ -16,7 +16,7 @@ class ImportPersonForm extends Form
             'type' => File::class,
             'name' => 'file',
             'options' => [
-                'label' => 'Select csv file',
+                'label' => 'Select CSV file:',
             ],
             'attributes' => [
                 "accept" => ".csv",
