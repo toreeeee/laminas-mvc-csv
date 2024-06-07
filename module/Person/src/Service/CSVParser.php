@@ -2,58 +2,70 @@
 
 namespace Person\Service;
 
+use Exception;
 use Person\Service\CSVFile\CSVRow;
 use Person\Service\CSVFile\RowValidationResult;
+use Person\Service\CSVFile\RowValidatorInterface;
 
 class CSVParser implements TableFileParserInterface
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private array $headings = [];
     private int $cols_per_line = 0;
     /**
-     * @var \Person\Service\CSVFile\CSVRow[]
+     * @var array<CSVRow>
      */
     private array $rows = [];
 
     /**
-     * @var \Person\Service\CSVFile\RowValidator[]
+     * @var array<RowValidatorInterface>
      */
     private array $row_validators = [];
 
-    public function addValidator(CSVFile\RowValidator $validator)
+    private string $delimiter;
+
+    /**
+     * @param array<RowValidatorInterface> $rowValidators
+     * @param string $delimiter
+     * @throws Exception
+     */
+    public function __construct(array $rowValidators, string $delimiter = ":")
     {
-        $this->row_validators[] = $validator;
+        if (strlen($delimiter) !== 1) {
+            throw new Exception("Delimiter must be exactly 1 character");
+        }
+        $this->delimiter = $delimiter;
     }
 
-    private function getColumns($line, $delimiter = ":"): array
+    public function parse(string $input): void
     {
-        return explode($delimiter, $line);
-    }
+        $lines = explode("\n", $input);
 
-    public function parse(string $document)
-    {
-        $lines = explode("\n", $document);
-
-        // get headings
+        // parse first line as header
         $this->headings = $this->getColumns(array_shift($lines));
         $this->cols_per_line = count($this->headings);
 
         foreach ($lines as $line) {
-            $columns = $this->getColumns($line, ":");
-            $this->rows[] = new CSVFile\CSVRow($columns, $this->cols_per_line);
+            $columns = $this->getColumns($line);
+            $this->rows[] = new CSVFile\CSVRow(
+                $columns,
+                $this->cols_per_line,
+                $this->row_validators
+            );
         }
     }
 
-    public function setHeadings(array $headings)
+    /**
+     * @param string $line
+     * @return array<string>
+     */
+    private function getColumns(string $line): array
     {
-        $this->headings = $headings;
-    }
-
-    public function addRow(CSVFile\CSVRow $row)
-    {
-        $this->rows[] = $row;
+        return array_map(function ($row) {
+            return trim($row);
+        }, explode($this->delimiter, $line));
     }
 
     public function getAmountCols(): int
@@ -62,15 +74,18 @@ class CSVParser implements TableFileParserInterface
     }
 
     /**
-     * @return \Person\Service\CSVFile\CSVRow[]
+     * @return array<TableRowInterface>
      */
     public function getValidRows(): array
     {
         return array_filter($this->rows, function ($row) {
-            return !$row->isError($this->row_validators);
+            return !$row->isError();
         });
     }
 
+    /**
+     * @return array<TableRowInterface>
+     */
     public function getInvalidRows(): array
     {
         return array_map(function ($row) {
@@ -81,46 +96,20 @@ class CSVParser implements TableFileParserInterface
 
             return $row;
         }, array_filter($this->rows, function ($row) {
-            return $row->isError($this->row_validators);
+            return $row->isError();
         }));
     }
 
-    public function encode($valid)
-    {
-        return $valid ? $this->itnlEncode($this->getValidRows()) : $this->itnlEncode($this->getInvalidRows());
-    }
-
     /**
-     * @param array<CSVRow> $rows
-     * @return string
+     * @return array<string>
      */
-    private function itnlEncode(array $rows): string
-    {
-        $text = implode(":", $this->headings) . "\n";
-
-        foreach ($rows as $row) {
-            $text .= implode(":", $row->getColumns()) . "\n";
-        }
-
-        return $text;
-    }
-
-    public function encodeValid(): string
-    {
-        return $this->itnlEncode($this->getValidRows());
-    }
-
-    public function encodeInvalid(): string
-    {
-        $this->headings[] = "errors";
-        $result = $this->itnlEncode($this->getInvalidRows());
-        array_pop($this->headings);
-
-        return $result;
-    }
-
     public function getHeadings(): array
     {
         return $this->headings;
+    }
+
+    public function getAllRows(): array
+    {
+        return $this->rows;
     }
 }

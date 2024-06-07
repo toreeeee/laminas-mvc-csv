@@ -2,7 +2,7 @@
 
  namespace Person\Service\CSVFile;
 
-interface RowValidator
+interface RowValidatorInterface
 {
     public function validate(CSVRow $row): RowValidationResult;
 }

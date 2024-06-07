@@ -55,6 +55,15 @@ return [
                             ],
                         ]
                     ],
+                    "import" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/import",
+                            "defaults" => [
+                                "action" => "import",
+                            ],
+                        ]
+                    ],
                     "edit" => [
                         "type" => Segment::class,
                         "options" => [

@@ -9,6 +9,10 @@ use Person\Form\PersonForm;
 use Person\Model\Person;
 use Person\Model\PersonCommandInterface;
 use Person\Model\PersonRepositoryInterface;
+use Person\Service\CSVEncoder;
+use Person\Service\CSVFile\CSVRow;
+
+use function Amp\Iterator\toArray;
 
 class PersonController extends AbstractActionController
 {
@@ -109,5 +113,24 @@ class PersonController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute('person');
+    }
+
+    public function importAction()
+    {
+        $encoder = new CSVEncoder(["first", "second"], [new CSVRow(["hello", "world"], 2), new CSVRow(["1", "2"], 2)]);
+//        print_r($encoder->encode());
+//        header("Content-Description: File Transfer");
+//        header("Content-Type: application/octet-stream");
+//        header("Content-Disposition: attachment; filename=\"invalid.csv\"");
+//
+//        die;
+
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            return []; // TODO: return form here
+        }
+
+        return [];
     }
 }

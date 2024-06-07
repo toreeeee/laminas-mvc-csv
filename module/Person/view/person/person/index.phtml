@@ -17,10 +17,10 @@
             <?= $this->escapeHtml($person->getFullName()) ?>
         </td>
         <td>
-            <?= $this->escapeHtml($person->getBirthday()) ?>
+            <?= $this->escapeHtml($person->getFormattedBirthday()) ?>
         </td>
         <td>
-            <?= $this->escapeHtml($person->getSalary()) ?>
+            <?= $this->escapeHtml($person->getFormattedSalary()) ?>
         </td>
         <td class="flex-row justify-content-end d-flex gap-1">
             <a type="button" class="btn btn-dark" href="<?= $this->url("person/edit", [

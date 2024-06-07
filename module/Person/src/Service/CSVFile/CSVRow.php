@@ -2,41 +2,48 @@
 
  namespace Person\Service\CSVFile;
 
- use Person\Service\CSVFile\RowValidator;
+ use Person\Service\CSVFile\RowValidatorInterface;
 use Person\Service\TableRowInterface;
 
 class CSVRow implements TableRowInterface
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private array $columns;
 
+    /**
+     * @var array<string>
+     */
     private array $errors = [];
 
     /**
-     * @var array<RowValidator>
+     * @var array<RowValidatorInterface>
      */
     private array $validators = [];
 
-
-
-    function __construct($columns, $expected_columns_count)
+    /**
+     * @param array<string> $columns
+     * @param int $expected_columns_count
+     * @param array<RowValidatorInterface> $validators
+     */
+    public function __construct(array $columns, int $expected_columns_count, array $validators = [])
     {
         $this->columns = $columns;
         if (count($this->columns) !== $expected_columns_count) {
             $this->errors[] = "Amount of columns does not match header count.";
         }
+        $this->validators = $validators;
     }
 
     /**
-     * @param \Person\Service\CSVFile\RowValidator[] $validators
+     * @param \Person\Service\CSVFile\RowValidatorInterface[] $validators
      * @return bool
      */
-    public function isError(): bool
+    public function isValid(): bool
     {
         if (count($this->errors) > 0) {
-            return true;
+            return false;
         }
 
         foreach ($this->validators as $validator) {
@@ -44,14 +51,14 @@ class CSVRow implements TableRowInterface
 
             if (!$validation_result->isValid()) {
                 array_push($this->errors, ...$validation_result->getErrors());
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-    public function addColumn($column)
+    public function addColumn(string $column): void
     {
         $this->columns[] = $column;
     }
@@ -78,16 +85,5 @@ class CSVRow implements TableRowInterface
             return null;
         }
         return implode(", ", $this->getErrors());
-    }
-
-    public function getColumnIndex(string $name): ?int
-    {
-        $result = array_search($name, $this->columns);
-        return $result === false ? null : $result;
-    }
-
-    public function addValidator(RowValidator $validator): void
-    {
-        // TODO: Implement addValidator() method.
     }
 }

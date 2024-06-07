@@ -7,27 +7,29 @@ use Person\Service\CSVFile\CSVRow;
 class CSVEncoder implements TableFileEncoderInterface
 {
     /**
-     * @var TableRowInterface[]
+     * @var array<TableRowInterface>
      */
     private array $rows;
     /**
-     * @var string[]
+     * @var array<string>
      */
     private array $headings;
+    private string $delimiter;
 
     /**
      * @param array<string> $headings
      * @param array<CSVRow> $rows
+     * @throws \Exception
      */
-    public function __construct(array $headings, array $rows)
+    public function __construct(array $headings, array $rows, string $delimiter = ":")
     {
+        if (strlen($delimiter) !== 1) {
+            throw new \Exception("Delimiter must be a single character");
+        }
+
         $this->headings = $headings;
         $this->rows = $rows;
-    }
-
-    private function getHeader()
-    {
-        return implode(":", $this->headings) . "\r\n";
+        $this->delimiter = $delimiter;
     }
 
     public function encode(): string
@@ -35,9 +37,14 @@ class CSVEncoder implements TableFileEncoderInterface
         $text = $this->getHeader();
 
         foreach ($this->rows as $row) {
-            $text .= implode(":", $row->getColumns()) . "\n";
+            $text .= implode(" " . $this->delimiter . " ", $row->getColumns()) . "\n";
         }
 
         return $text;
+    }
+
+    private function getHeader(): string
+    {
+        return implode(" " . $this->delimiter . " ", $this->headings) . "\r\n";
     }
 }

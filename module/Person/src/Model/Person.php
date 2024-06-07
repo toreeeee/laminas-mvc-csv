@@ -2,6 +2,8 @@
 
 namespace Person\Model;
 
+use NumberFormatter;
+
 class Person
 {
     /**
@@ -64,8 +66,22 @@ class Person
         return $this->birthday;
     }
 
+    public function getFormattedBirthday(): string
+    {
+        $date = date_create($this->getBirthday());
+
+        return date_format($date, 'd.m.Y');
+    }
+
     public function getSalary(): float
     {
         return $this->salary;
+    }
+
+    public function getFormattedSalary(): string
+    {
+        $fmt = new NumberFormatter("de_De", NumberFormatter::CURRENCY);
+
+        return $fmt->formatCurrency($this->getSalary(), "EUR");
     }
 }

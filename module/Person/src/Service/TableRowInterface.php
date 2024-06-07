@@ -2,19 +2,15 @@
 
 namespace Person\Service;
 
-use Person\Service\CSVFile\RowValidator;
+use Person\Service\CSVFile\RowValidatorInterface;
 
 interface TableRowInterface
 {
-    public function isError(): bool;
+    public function isValid(): bool;
     public function getErrorMessage(): ?string;
 
     /**
      * @return array<string>
      */
     public function getColumns(): array;
-
-    public function getColumnIndex(string $name): ?int;
-
-    public function addValidator(RowValidator $validator): void;
 }
