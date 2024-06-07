@@ -4,7 +4,7 @@
 
  use Person\Service\TableRowInterface;
 
- class CSVRow implements TableRowInterface
+class CSVRow implements TableRowInterface
 {
     /**
      * @var array<string>
