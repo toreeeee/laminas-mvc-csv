@@ -2,10 +2,9 @@
 
  namespace Person\Service\CSVFile;
 
- use Person\Service\CSVFile\RowValidatorInterface;
-use Person\Service\TableRowInterface;
+ use Person\Service\TableRowInterface;
 
-class CSVRow implements TableRowInterface
+ class CSVRow implements TableRowInterface
 {
     /**
      * @var array<string>
@@ -24,13 +23,13 @@ class CSVRow implements TableRowInterface
 
     /**
      * @param array<string> $columns
-     * @param int $expected_columns_count
+     * @param int $expectedColumnsCount
      * @param array<RowValidatorInterface> $validators
      */
-    public function __construct(array $columns, int $expected_columns_count, array $validators = [])
+    public function __construct(array $columns, int $expectedColumnsCount = -1, array $validators = [])
     {
         $this->columns = $columns;
-        if (count($this->columns) !== $expected_columns_count) {
+        if ($expectedColumnsCount !== -1 && count($this->columns) !== $expectedColumnsCount) {
             $this->errors[] = "Amount of columns does not match header count.";
         }
         $this->validators = $validators;
@@ -46,10 +45,10 @@ class CSVRow implements TableRowInterface
         }
 
         foreach ($this->validators as $validator) {
-            $validation_result = $validator->validate($this);
+            $validationResult = $validator->validate($this);
 
-            if (!$validation_result->isOk()) {
-                array_push($this->errors, ...$validation_result->getErrors());
+            if (!$validationResult->isOk()) {
+                array_push($this->errors, ...$validationResult->getErrors());
                 return false;
             }
         }

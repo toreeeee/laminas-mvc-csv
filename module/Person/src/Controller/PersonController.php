@@ -13,6 +13,8 @@ use Person\Model\PersonRepositoryInterface;
 use Person\Service\CSVEncoder;
 use Person\Service\CSVFile\CSVRow;
 use Person\Service\CSVParser;
+use Person\Service\TableFileEncoderInterface;
+use Person\Service\TableFileParserInterface;
 
 use function Amp\Iterator\toArray;
 
@@ -22,10 +24,19 @@ class PersonController extends AbstractActionController
 
     private PersonCommandInterface $command;
 
-    function __construct(PersonRepositoryInterface $personRepository, PersonCommandInterface $command)
-    {
+    private TableFileParserInterface $parser;
+    private TableFileEncoderInterface $encoder;
+
+    public function __construct(
+        PersonRepositoryInterface $personRepository,
+        PersonCommandInterface $command,
+        TableFileParserInterface $parser,
+        TableFileEncoderInterface $encoder
+    ) {
         $this->personRepository = $personRepository;
         $this->command = $command;
+        $this->parser = $parser;
+        $this->encoder = $encoder;
     }
 
     public function indexAction()
@@ -138,15 +149,9 @@ class PersonController extends AbstractActionController
 
         $fileContent = file_get_contents($form->getData()["file"]["tmp_name"]);
 
-        try {
-            $parser = new CSVParser([]);
-        } catch (\Exception $e) {
-            // TODO: handle exception
-            throw $e;
-        }
-        $parser->parse($fileContent);
+        $table = $this->parser->parse($fileContent);
 
-        $validRows = $parser->getValidRows();
+        $validRows = $table->getValidRows();
 
         $this->command->insertManyPersons(
             array_map(function ($row) {
@@ -157,17 +162,10 @@ class PersonController extends AbstractActionController
         );
 
 
-        try {
-            $encoder = new CSVEncoder($parser->getHeadings(), $parser->getInvalidRows());
-        } catch (\Exception $e) {
-            // TODO: handle exception
-            throw $e;
-        }
-
         header("Content-Description: File Transfer");
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename=\"invalid.csv\"");
-        print_r($encoder->encode());
+        echo($this->encoder->encode($table->getHeadings(), $table->getInvalidRows()));
         die;
 
 
@@ -177,14 +175,15 @@ class PersonController extends AbstractActionController
     public function exportAction()
     {
         $persons = $this->personRepository->getAll();
-        $encoder = new CSVEncoder(["birthday", "first_name", "last_name", "salary"], array_map(function ($it) {
+        $encoded = $this->encoder->encode(["birthday", "first_name", "last_name", "salary"], array_map(function ($it) {
             return new CSVRow([$it["birthday"], $it["first_name"], $it["last_name"], $it["salary"]], 4);
         }, $persons->toArray()));
+
 
         header("Content-Description: File Transfer");
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename=\"export.csv\"");
-        print_r($encoder->encode());
+        echo($encoded);
         die;
     }
 }

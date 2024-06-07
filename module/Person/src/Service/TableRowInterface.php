@@ -2,8 +2,6 @@
 
 namespace Person\Service;
 
-use Person\Service\CSVFile\RowValidatorInterface;
-
 interface TableRowInterface
 {
     public function isValid(): bool;

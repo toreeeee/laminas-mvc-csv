@@ -6,6 +6,8 @@ use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Person\Controller\PersonController;
+use Person\Factory\CSVEncoderFactory;
+use Person\Factory\CSVParserFactory;
 use Person\Factory\LaminasDbSqlCommandFactory;
 use Person\Factory\LaminasDbSqlRepositoryFactory;
 use Person\Factory\PersonControllerFactory;
@@ -15,10 +17,15 @@ return [
         "aliases" => [
             Model\PersonRepositoryInterface::class => Model\LaminasDbSqlRepository::class,
             Model\PersonCommandInterface::class => Model\LaminasDbSqlCommand::class,
+            Service\TableFileParserInterface::class => Service\CSVParser::class,
+            Service\TableFileEncoderInterface::class => Service\CSVEncoder::class
+
         ],
         "factories" => [
             Model\LaminasDbSqlRepository::class => LaminasDbSqlRepositoryFactory::class,
             Model\LaminasDbSqlCommand::class => LaminasDbSqlCommandFactory::class,
+            Service\CSVParser::class => CSVParserFactory::class,
+            Service\CSVEncoder::class => CSVEncoderFactory::class,
         ]
     ],
     'controllers' => [

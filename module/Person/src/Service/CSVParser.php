@@ -3,22 +3,11 @@
 namespace Person\Service;
 
 use Exception;
-use Person\Service\CSVFile\CSVRow;
-use Person\Service\CSVFile\RowValidationResult;
 use Person\Service\CSVFile\RowValidatorInterface;
+use RuntimeException;
 
 class CSVParser implements TableFileParserInterface
 {
-    /**
-     * @var array<string>
-     */
-    private array $headings = [];
-    private int $cols_per_line = 0;
-    /**
-     * @var array<CSVRow>
-     */
-    private array $rows = [];
-
     /**
      * @var array<RowValidatorInterface>
      */
@@ -34,88 +23,39 @@ class CSVParser implements TableFileParserInterface
     public function __construct(array $rowValidators, string $delimiter = ":")
     {
         if (strlen($delimiter) !== 1) {
-            throw new Exception("Delimiter must be exactly 1 character");
+            throw new RuntimeException("Delimiter must be exactly 1 character");
         }
         $this->delimiter = $delimiter;
     }
 
-    public function parse(string $input): void
+    public function parse(string $input): TableFile
     {
         $lines = explode("\n", $input);
 
         // parse first line as header
-        $this->headings = $this->getColumns(array_shift($lines));
-        $this->cols_per_line = count($this->headings);
+        $headings = $this->parseColumns(array_shift($lines));
+        $colsPerLine = count($headings);
 
-        foreach ($lines as $line) {
-            if (!strlen($line)) {
-                continue;
-            }
-            $columns = $this->getColumns($line);
-            $this->rows[] = new CSVFile\CSVRow(
+        return new TableFile($headings, array_map(function ($line) use ($colsPerLine) {
+            $columns = $this->parseColumns($line);
+            return new CSVFile\CSVRow(
                 $columns,
-                $this->cols_per_line,
+                $colsPerLine,
                 $this->row_validators
             );
-        }
+        }, array_filter($lines, function ($line) {
+            return !!strlen($line);
+        })));
     }
 
     /**
      * @param string $line
      * @return array<string>
      */
-    private function getColumns(string $line): array
+    private function parseColumns(string $line): array
     {
         return array_map(function ($row) {
             return trim($row);
         }, explode($this->delimiter, $line));
-    }
-
-    public function getAmountCols(): int
-    {
-        return $this->cols_per_line;
-    }
-
-    /**
-     * @return array<TableRowInterface>
-     */
-    public function getValidRows(): array
-    {
-        return array_filter($this->rows, function ($row) {
-            return $row->isValid();
-        });
-    }
-
-    /**
-     * @return array<TableRowInterface>
-     */
-    public function getInvalidRows(): array
-    {
-        return array_map(function ($row) {
-            $columns = $row->getColumns();
-            if ($columns[count($columns) - 1] !== implode(", ", $row->getErrors())) {
-                $row->addColumn(implode(", ", $row->getErrors()));
-            }
-
-            return $row;
-        }, array_filter($this->rows, function ($row) {
-            return !$row->isValid();
-        }));
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getHeadings(): array
-    {
-        return $this->headings;
-    }
-
-    /**
-     * @return array<TableRowInterface>
-     */
-    public function getAllRows(): array
-    {
-        return $this->rows;
     }
 }

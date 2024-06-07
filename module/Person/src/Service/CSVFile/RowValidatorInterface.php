@@ -2,7 +2,13 @@
 
  namespace Person\Service\CSVFile;
 
+use Person\Service\TableRowInterface;
+
 interface RowValidatorInterface
 {
-    public function validate(CSVRow $row): RowValidationResult;
+    /**
+     * @param CSVRow $row
+     * @return RowValidationResult
+     */
+    public function validate(TableRowInterface $row): RowValidationResult;
 }

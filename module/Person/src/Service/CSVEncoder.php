@@ -6,14 +6,6 @@ use Person\Service\CSVFile\CSVRow;
 
 class CSVEncoder implements TableFileEncoderInterface
 {
-    /**
-     * @var array<TableRowInterface>
-     */
-    private array $rows;
-    /**
-     * @var array<string>
-     */
-    private array $headings;
     private string $delimiter;
 
     /**
@@ -21,32 +13,27 @@ class CSVEncoder implements TableFileEncoderInterface
      * @param array<CSVRow> $rows
      * @throws \Exception
      */
-    public function __construct(array $headings, array $rows, string $delimiter = ":")
+    public function __construct(string $delimiter = ":")
     {
         if (strlen($delimiter) !== 1) {
-            throw new \Exception("Delimiter must be a single character");
+            throw new \RuntimeException("Delimiter must be a single character");
         }
 
-        $this->headings = $headings;
-        $this->rows = $rows;
         $this->delimiter = $delimiter;
     }
 
-    public function encode(): string
+    public function encode(array $headings, array $rows): string
     {
-        $text = $this->getHeader();
+        // add headings
+        $text = implode($this->getDelimiter(), $headings) . "\n";
 
-        foreach ($this->rows as $row) {
+        foreach ($rows as $row) {
             $text .= implode($this->getDelimiter(), $row->getColumns()) . "\n";
         }
 
         return $text;
     }
 
-    private function getHeader(): string
-    {
-        return implode($this->getDelimiter(), $this->headings) . "\n";
-    }
 
     private function getDelimiter(): string
     {

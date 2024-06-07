@@ -4,5 +4,10 @@ namespace Person\Service;
 
 interface TableFileEncoderInterface
 {
-    public function encode(): string;
+    /**
+     * @param array<string> $headings
+     * @param array<TableRowInterface> $rows
+     * @return string
+     */
+    public function encode(array $headings, array $rows): string;
 }
