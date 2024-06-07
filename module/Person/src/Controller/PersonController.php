@@ -41,7 +41,14 @@ class PersonController extends AbstractActionController
 
     public function indexAction()
     {
-        return ["persons" => $this->personRepository->getAll()];
+        $paginator = $this->personRepository->getAllPaginated();
+        $page = (int)$this->params()->fromQuery("page", 1);
+        $page = ($page < 1) ? 1 : $page;
+        $paginator->setCurrentPageNumber($page);
+
+        $paginator->setItemCountPerPage(10);
+
+        return ["pagination" => $paginator];
     }
 
     public function editAction()

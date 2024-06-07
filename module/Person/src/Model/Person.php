@@ -84,4 +84,13 @@ class Person
 
         return $fmt->formatCurrency($this->getSalary(), "EUR");
     }
+
+    public function exchangeArray(array $data)
+    {
+        $this->id = !empty($data['id']) ? $data['id'] : null;
+        $this->first_name = !empty($data['first_name']) ? $data['first_name'] : null;
+        $this->last_name = !empty($data['last_name']) ? $data['last_name'] : null;
+        $this->birthday = !empty($data['birthday']) ? $data['birthday'] : null;
+        $this->salary = !empty($data['salary']) ? $data['salary'] : null;
+    }
 }

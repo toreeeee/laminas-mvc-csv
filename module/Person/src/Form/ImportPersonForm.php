@@ -5,6 +5,7 @@ namespace Person\Form;
 use Laminas\Form\Element\File;
 use Laminas\Form\Element\Submit;
 use Laminas\Form\Form;
+use Laminas\InputFilter;
 
 class ImportPersonForm extends Form
 {
@@ -32,5 +33,23 @@ class ImportPersonForm extends Form
                 'id' => 'submitbutton',
             ],
         ]);
+
+        $this->addInputFilter();
+    }
+
+    public function addInputFilter()
+    {
+        $inputFilter = new InputFilter\InputFilter();
+
+        $fileInput = new InputFilter\FileInput('file');
+        $fileInput->setRequired(true);
+
+        $fileInput->getValidatorChain()
+            ->attachByName('filesize', ['max' => 204800])
+            ->attachByName('filemimetype', ['mimeType' => 'text/csv,text/plain']);
+
+        $inputFilter->add($fileInput);
+
+        $this->setInputFilter($inputFilter);
     }
 }

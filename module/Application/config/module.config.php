@@ -85,6 +85,28 @@ return [
             [
                 "label" => "Person",
                 "route" => "person",
+                "pages" => [
+                    [
+                        "label" => "Add",
+                        "route" => "person",
+                        "action" => "add",
+                    ],
+                    [
+                        "label" => "Edit",
+                        "route" => "person",
+                        "action" => "edit",
+                    ],
+                    [
+                        "label" => "Delete",
+                        "route" => "person",
+                        "action" => "delete",
+                    ],
+                    [
+                        "label" => "Import",
+                        "route" => "person",
+                        "action" => "import",
+                    ]
+                ]
             ]
         ],
     ],

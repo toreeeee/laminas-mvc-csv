@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($this->persons as $person): ?>
+    <?php foreach ($this->pagination as $person): ?>
     <tr>
         <td>
             <?= $this->escapeHtml($person->getFullName()) ?>
@@ -39,3 +39,14 @@
     <?php endforeach ?>
     </tbody>
 </table>
+
+<?= $this->paginationControl(
+// The paginator object:
+    $this->pagination,
+    // The scrolling style:
+    'sliding',
+    // The partial to use to render the control:
+    'partial/paginator',
+    // The route to link to when a user clicks a control link:
+    ['route' => 'person']
+) ?>
