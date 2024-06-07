@@ -11,6 +11,12 @@ interface PersonCommandInterface
     public function insertPerson(Person $person): Person;
 
     /**
+     * @param array<Person> $persons
+     * @return array<Person>
+     */
+    public function insertManyPersons(array $persons): array;
+
+    /**
      * @param Person $person The post to update; must have an identifier.
      * @return Person The updated post.
      */

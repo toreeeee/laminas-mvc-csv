@@ -48,6 +48,9 @@ class CSVParser implements TableFileParserInterface
         $this->cols_per_line = count($this->headings);
 
         foreach ($lines as $line) {
+            if (!strlen($line)) {
+                continue;
+            }
             $columns = $this->getColumns($line);
             $this->rows[] = new CSVFile\CSVRow(
                 $columns,

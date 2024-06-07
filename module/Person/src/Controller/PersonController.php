@@ -12,6 +12,7 @@ use Person\Model\PersonCommandInterface;
 use Person\Model\PersonRepositoryInterface;
 use Person\Service\CSVEncoder;
 use Person\Service\CSVFile\CSVRow;
+use Person\Service\CSVParser;
 
 use function Amp\Iterator\toArray;
 
@@ -119,13 +120,6 @@ class PersonController extends AbstractActionController
     public function importAction()
     {
         $form = new ImportPersonForm();
-//        $encoder = new CSVEncoder(["first", "second"], [new CSVRow(["hello", "world"], 2), new CSVRow(["1", "2"], 2)]);
-//        print_r($encoder->encode());
-//        header("Content-Description: File Transfer");
-//        header("Content-Type: application/octet-stream");
-//        header("Content-Disposition: attachment; filename=\"invalid.csv\"");
-//
-//        die;
 
         $request = $this->getRequest();
 
@@ -133,6 +127,50 @@ class PersonController extends AbstractActionController
             return ["form" => $form]; // TODO: return form here
         }
 
-        return [];
+        $form->setData(array_merge_recursive(
+            $request->getPost()->toArray(),
+            $request->getFiles()->toArray()
+        ));
+
+        if (!$form->isValid()) {
+            return ['form' => $form];
+        }
+
+        $fileContent = file_get_contents($form->getData()["file"]["tmp_name"]);
+
+        try {
+            $parser = new CSVParser([]);
+        } catch (\Exception $e) {
+            // TODO: handle exception
+            throw $e;
+        }
+        $parser->parse($fileContent);
+
+        $validRows = $parser->getValidRows();
+
+        $this->command->insertManyPersons(
+            array_map(function ($row) {
+                    $columns = $row->getColumns();
+                    return new Person($columns[1], $columns[2], $columns[0], (float)$columns[3]);
+            },
+                $validRows)
+        );
+
+
+        try {
+            $encoder = new CSVEncoder($parser->getHeadings(), $parser->getInvalidRows());
+        } catch (\Exception $e) {
+            // TODO: handle exception
+            throw $e;
+        }
+
+        print_r($encoder->encode());
+        header("Content-Description: File Transfer");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=\"invalid.csv\"");
+        die;
+
+
+        return ["form" => $form];
     }
 }

@@ -17,7 +17,10 @@ class ImportPersonForm extends Form
             'name' => 'file',
             'options' => [
                 'label' => 'Select csv file',
-                "accept" => "text/csv"
+            ],
+            'attributes' => [
+                "accept" => ".csv",
+                "required" => true
             ],
         ]);
 

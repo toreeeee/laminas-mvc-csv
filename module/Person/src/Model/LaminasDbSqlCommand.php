@@ -99,4 +99,11 @@ class LaminasDbSqlCommand implements PersonCommandInterface
 
         return true;
     }
+
+    public function insertManyPersons(array $persons): array
+    {
+        return array_map(function ($person) {
+            return $this->insertPerson($person);
+        }, $persons);
+    }
 }
