@@ -2,9 +2,10 @@
 
 namespace Person\Service;
 
+use Person\Service\CSVFile\CSVRow;
 use Person\Service\CSVFile\RowValidationResult;
 
-class CSVFile implements TableFileParserInterface
+class CSVParser implements TableFileParserInterface
 {
     /**
      * @var string[]
@@ -84,12 +85,21 @@ class CSVFile implements TableFileParserInterface
         }));
     }
 
-    private function encode($rows): string
+    public function encode($valid)
+    {
+        return $valid ? $this->itnlEncode($this->getValidRows()) : $this->itnlEncode($this->getInvalidRows());
+    }
+
+    /**
+     * @param array<CSVRow> $rows
+     * @return string
+     */
+    private function itnlEncode(array $rows): string
     {
         $text = implode(":", $this->headings) . "\n";
 
         foreach ($rows as $row) {
-            $text .= implode(":", $row->get_columns()) . "\n";
+            $text .= implode(":", $row->getColumns()) . "\n";
         }
 
         return $text;
@@ -97,15 +107,20 @@ class CSVFile implements TableFileParserInterface
 
     public function encodeValid(): string
     {
-        return $this->encode($this->getValidRows());
+        return $this->itnlEncode($this->getValidRows());
     }
 
     public function encodeInvalid(): string
     {
         $this->headings[] = "errors";
-        $result = $this->encode($this->getInvalidRows());
+        $result = $this->itnlEncode($this->getInvalidRows());
         array_pop($this->headings);
 
         return $result;
+    }
+
+    public function getHeadings(): array
+    {
+        return $this->headings;
     }
 }

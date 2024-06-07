@@ -2,9 +2,10 @@
 
  namespace Person\Service\CSVFile;
 
-use Person\Service\RowValidator;
+ use Person\Service\CSVFile\RowValidator;
+use Person\Service\TableRowInterface;
 
-class CSVRow
+class CSVRow implements TableRowInterface
 {
     /**
      * @var string[]
@@ -12,6 +13,12 @@ class CSVRow
     private array $columns;
 
     private array $errors = [];
+
+    /**
+     * @var array<RowValidator>
+     */
+    private array $validators = [];
+
 
 
     function __construct($columns, $expected_columns_count)
@@ -26,13 +33,13 @@ class CSVRow
      * @param \Person\Service\CSVFile\RowValidator[] $validators
      * @return bool
      */
-    public function isError(array $validators): bool
+    public function isError(): bool
     {
         if (count($this->errors) > 0) {
             return true;
         }
 
-        foreach ($validators as $validator) {
+        foreach ($this->validators as $validator) {
             $validation_result = $validator->validate($this);
 
             if (!$validation_result->isValid()) {
@@ -57,8 +64,30 @@ class CSVRow
         return $this->errors;
     }
 
+    /**
+     * @return string[]
+     */
     public function getColumns(): array
     {
         return $this->columns;
+    }
+
+    public function getErrorMessage(): ?string
+    {
+        if (!count($this->getErrors())) {
+            return null;
+        }
+        return implode(", ", $this->getErrors());
+    }
+
+    public function getColumnIndex(string $name): ?int
+    {
+        $result = array_search($name, $this->columns);
+        return $result === false ? null : $result;
+    }
+
+    public function addValidator(RowValidator $validator): void
+    {
+        // TODO: Implement addValidator() method.
     }
 }
