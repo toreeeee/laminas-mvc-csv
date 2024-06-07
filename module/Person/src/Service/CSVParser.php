@@ -26,6 +26,7 @@ class CSVParser implements TableFileParserInterface
             throw new RuntimeException("Delimiter must be exactly 1 character");
         }
         $this->delimiter = $delimiter;
+        $this->row_validators = $rowValidators;
     }
 
     public function parse(string $input): TableFile
