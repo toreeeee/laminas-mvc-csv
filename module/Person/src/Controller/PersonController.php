@@ -164,13 +164,27 @@ class PersonController extends AbstractActionController
             throw $e;
         }
 
-        print_r($encoder->encode());
         header("Content-Description: File Transfer");
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename=\"invalid.csv\"");
+        print_r($encoder->encode());
         die;
 
 
-        return ["form" => $form];
+//        return ["form" => $form];
+    }
+
+    public function exportAction()
+    {
+        $persons = $this->personRepository->getAll();
+        $encoder = new CSVEncoder(["birthday", "first_name", "last_name", "salary"], array_map(function ($it) {
+            return new CSVRow([$it["birthday"], $it["first_name"], $it["last_name"], $it["salary"]], 4);
+        }, $persons->toArray()));
+
+        header("Content-Description: File Transfer");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=\"export.csv\"");
+        print_r($encoder->encode());
+        die;
     }
 }

@@ -64,6 +64,15 @@ return [
                             ],
                         ]
                     ],
+                    "export" => [
+                        "type" => Segment::class,
+                        "options" => [
+                            "route" => "/export",
+                            "defaults" => [
+                                "action" => "export",
+                            ],
+                        ]
+                    ],
                     "edit" => [
                         "type" => Segment::class,
                         "options" => [
