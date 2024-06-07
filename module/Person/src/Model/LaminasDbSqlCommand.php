@@ -8,8 +8,6 @@ use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\Update;
-use Person\Model\Person;
-use Person\Model\PersonCommandInterface;
 use RuntimeException;
 
 class LaminasDbSqlCommand implements PersonCommandInterface
@@ -19,37 +17,6 @@ class LaminasDbSqlCommand implements PersonCommandInterface
     public function __construct(AdapterInterface $db)
     {
         $this->db = $db;
-    }
-
-    public function insertPerson(Person $person): Person
-    {
-        $insert = new Insert('person');
-        $insert->values([
-            'first_name' => $person->getFirstName(),
-            'last_name' => $person->getLastName(),
-            "birthday" => $person->getBirthday(),
-            "salary" => $person->getSalary(),
-        ]);
-
-        $sql = new Sql($this->db);
-        $statement = $sql->prepareStatementForSqlObject($insert);
-        $result = $statement->execute();
-
-        if (!$result instanceof ResultInterface) {
-            throw new RuntimeException(
-                'Database error occurred during person insert operation'
-            );
-        }
-
-        $id = $result->getGeneratedValue();
-
-        return new Person(
-            $person->getFirstName(),
-            $person->getLastName(),
-            $person->getBirthday(),
-            $person->getSalary(),
-            $id
-        );
     }
 
     public function updatePerson(Person $person): Person
@@ -105,5 +72,36 @@ class LaminasDbSqlCommand implements PersonCommandInterface
         return array_map(function ($person) {
             return $this->insertPerson($person);
         }, $persons);
+    }
+
+    public function insertPerson(Person $person): Person
+    {
+        $insert = new Insert('person');
+        $insert->values([
+            'first_name' => $person->getFirstName(),
+            'last_name' => $person->getLastName(),
+            "birthday" => $person->getBirthday(),
+            "salary" => $person->getSalary(),
+        ]);
+
+        $sql = new Sql($this->db);
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $result = $statement->execute();
+
+        if (!$result instanceof ResultInterface) {
+            throw new RuntimeException(
+                'Database error occurred during person insert operation'
+            );
+        }
+
+        $id = $result->getGeneratedValue();
+
+        return new Person(
+            $person->getFirstName(),
+            $person->getLastName(),
+            $person->getBirthday(),
+            $person->getSalary(),
+            $id
+        );
     }
 }

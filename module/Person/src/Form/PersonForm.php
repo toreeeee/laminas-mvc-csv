@@ -2,12 +2,12 @@
 
 namespace Person\Form;
 
+use Laminas\Filter;
+use Laminas\Form\Element\DateSelect;
+use Laminas\Form\Element\Number;
 use Laminas\Form\Element\Submit;
 use Laminas\Form\Element\Text;
-use Laminas\Form\Element\Number;
-use Laminas\Form\Element\DateSelect;
 use Laminas\Form\Form;
-use Laminas\Filter;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Validator\Regex as RegexValidator;
 use Person\Model\Person;

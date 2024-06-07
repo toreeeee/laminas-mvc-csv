@@ -56,17 +56,17 @@ class CSVRow implements TableRowInterface
         return true;
     }
 
-    public function addColumn(string $column): void
-    {
-        $this->columns[] = $column;
-    }
-
     /**
      * @return array<string>
      */
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    public function addColumn(string $column): void
+    {
+        $this->columns[] = $column;
     }
 
     /**

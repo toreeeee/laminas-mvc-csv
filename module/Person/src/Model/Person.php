@@ -61,11 +61,6 @@ class Person
         return $this->last_name;
     }
 
-    public function getBirthday(): string
-    {
-        return $this->birthday;
-    }
-
     public function getFormattedBirthday(): string
     {
         $date = date_create($this->getBirthday());
@@ -73,9 +68,9 @@ class Person
         return date_format($date, 'd.m.Y');
     }
 
-    public function getSalary(): float
+    public function getBirthday(): string
     {
-        return $this->salary;
+        return $this->birthday;
     }
 
     public function getFormattedSalary(): string
@@ -83,6 +78,11 @@ class Person
         $fmt = new NumberFormatter("de_De", NumberFormatter::CURRENCY);
 
         return $fmt->formatCurrency($this->getSalary(), "EUR");
+    }
+
+    public function getSalary(): float
+    {
+        return $this->salary;
     }
 
     public function exchangeArray(array $data)

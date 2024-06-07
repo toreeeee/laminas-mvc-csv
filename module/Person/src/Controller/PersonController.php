@@ -10,20 +10,14 @@ use Person\Form\PersonForm;
 use Person\Model\Person;
 use Person\Model\PersonCommandInterface;
 use Person\Model\PersonRepositoryInterface;
-use Person\Service\CSVEncoder;
 use Person\Service\CSVFile\CSVRow;
-use Person\Service\CSVParser;
 use Person\Service\TableFileEncoderInterface;
 use Person\Service\TableFileParserInterface;
-
-use function Amp\Iterator\toArray;
 
 class PersonController extends AbstractActionController
 {
     private PersonRepositoryInterface $personRepository;
-
     private PersonCommandInterface $command;
-
     private TableFileParserInterface $parser;
     private TableFileEncoderInterface $encoder;
 
