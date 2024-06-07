@@ -82,6 +82,10 @@ return [
                     ],
                 ],
             ],
+            [
+                "label" => "Person",
+                "route" => "person",
+            ]
         ],
     ],
 ];
