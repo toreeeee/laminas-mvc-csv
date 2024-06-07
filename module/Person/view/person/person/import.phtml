@@ -1,6 +1,26 @@
 <h1>import csv</h1>
 
-<div class="input-group mb-3">
-    <input type="file" class="form-control" id="inputGroupFile02">
-    <label class="input-group-text" for="inputGroupFile02">Upload</label>
-</div>
+<!--<div class="input-group mb-3">-->
+<!--    <input type="file" class="form-control" id="inputGroupFile02">-->
+<!--    <label class="input-group-text" for="inputGroupFile02">Upload</label>-->
+<!--</div>-->
+
+<?php
+$form = $this->form;
+
+$form->setAttribute("class", "d-flex flex-column gap-2");
+$file = $form->get("file");
+$file->setAttribute("class", "form-control");
+//$birthday->getFieldsetElement()->setAttribute('class', 'form-control d-flex');
+
+
+// This provides CSS classes for the submit button:
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+//$form->setAttribute('action', $this->url('person/add', ['action' => 'add']));
+$form->prepare();
+
+echo $this->form()->openTag($this->form);
+echo $this->formCollection($this->form);
+echo $this->form()->closeTag();

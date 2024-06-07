@@ -79,7 +79,7 @@ class CSVParser implements TableFileParserInterface
     public function getValidRows(): array
     {
         return array_filter($this->rows, function ($row) {
-            return !$row->isError();
+            return $row->isValid();
         });
     }
 
@@ -96,7 +96,7 @@ class CSVParser implements TableFileParserInterface
 
             return $row;
         }, array_filter($this->rows, function ($row) {
-            return $row->isError();
+            return !$row->isValid();
         }));
     }
 
@@ -108,6 +108,9 @@ class CSVParser implements TableFileParserInterface
         return $this->headings;
     }
 
+    /**
+     * @return array<TableRowInterface>
+     */
     public function getAllRows(): array
     {
         return $this->rows;

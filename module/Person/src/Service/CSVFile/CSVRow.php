@@ -37,7 +37,6 @@ class CSVRow implements TableRowInterface
     }
 
     /**
-     * @param \Person\Service\CSVFile\RowValidatorInterface[] $validators
      * @return bool
      */
     public function isValid(): bool
@@ -49,7 +48,7 @@ class CSVRow implements TableRowInterface
         foreach ($this->validators as $validator) {
             $validation_result = $validator->validate($this);
 
-            if (!$validation_result->isValid()) {
+            if (!$validation_result->isOk()) {
                 array_push($this->errors, ...$validation_result->getErrors());
                 return false;
             }
@@ -64,7 +63,7 @@ class CSVRow implements TableRowInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -72,7 +71,7 @@ class CSVRow implements TableRowInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getColumns(): array
     {

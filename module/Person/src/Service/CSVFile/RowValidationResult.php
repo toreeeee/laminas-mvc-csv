@@ -5,22 +5,25 @@
 class RowValidationResult
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private array $errors;
 
-    function __construct($errors)
+    /**
+     * @param array<string> $errors
+     */
+    public function __construct(array $errors)
     {
         $this->errors = $errors;
     }
 
-    public function isValid(): bool
+    public function isOk(): bool
     {
         return !count($this->errors);
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getErrors(): array
     {

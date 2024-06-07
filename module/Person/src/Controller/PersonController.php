@@ -5,6 +5,7 @@ namespace Person\Controller;
 use InvalidArgumentException;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Person\Form\ImportPersonForm;
 use Person\Form\PersonForm;
 use Person\Model\Person;
 use Person\Model\PersonCommandInterface;
@@ -117,7 +118,8 @@ class PersonController extends AbstractActionController
 
     public function importAction()
     {
-        $encoder = new CSVEncoder(["first", "second"], [new CSVRow(["hello", "world"], 2), new CSVRow(["1", "2"], 2)]);
+        $form = new ImportPersonForm();
+//        $encoder = new CSVEncoder(["first", "second"], [new CSVRow(["hello", "world"], 2), new CSVRow(["1", "2"], 2)]);
 //        print_r($encoder->encode());
 //        header("Content-Description: File Transfer");
 //        header("Content-Type: application/octet-stream");
@@ -128,7 +130,7 @@ class PersonController extends AbstractActionController
         $request = $this->getRequest();
 
         if (!$request->isPost()) {
-            return []; // TODO: return form here
+            return ["form" => $form]; // TODO: return form here
         }
 
         return [];

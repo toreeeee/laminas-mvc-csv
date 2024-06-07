@@ -37,7 +37,7 @@ class CSVEncoder implements TableFileEncoderInterface
         $text = $this->getHeader();
 
         foreach ($this->rows as $row) {
-            $text .= implode(" " . $this->delimiter . " ", $row->getColumns()) . "\n";
+            $text .= implode($this->getDelimiter(), $row->getColumns()) . "\n";
         }
 
         return $text;
@@ -45,6 +45,11 @@ class CSVEncoder implements TableFileEncoderInterface
 
     private function getHeader(): string
     {
-        return implode(" " . $this->delimiter . " ", $this->headings) . "\r\n";
+        return implode($this->getDelimiter(), $this->headings) . "\n";
+    }
+
+    private function getDelimiter(): string
+    {
+        return " " . $this->delimiter . " ";
     }
 }
