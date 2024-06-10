@@ -28,11 +28,11 @@ class Person
     private $salary;
 
     public function __construct(
-        string $firstName,
-        string $lastName,
-        string $birthday,
-        float $salary,
-        int | null $id = null
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?string $birthday = null,
+        ?float $salary = null,
+        ?int $id = null
     ) {
         $this->first_name = $firstName;
         $this->last_name = $lastName;
@@ -51,12 +51,12 @@ class Person
         return sprintf("%s %s", $this->first_name, $this->last_name);
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
@@ -68,7 +68,7 @@ class Person
         return date_format($date, 'd.m.Y');
     }
 
-    public function getBirthday(): string
+    public function getBirthday(): ?string
     {
         return $this->birthday;
     }
@@ -80,7 +80,7 @@ class Person
         return $fmt->formatCurrency($this->getSalary(), "EUR");
     }
 
-    public function getSalary(): float
+    public function getSalary(): ?float
     {
         return $this->salary;
     }

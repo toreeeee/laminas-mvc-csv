@@ -57,7 +57,9 @@ class PersonRowValidator implements RowValidatorInterface
                 $errors[] = ("Invalid day");
             }
 
-            if (date_parse($input)["warning_count"] !== 0) {
+            $dateParseResult = date_parse($input);
+
+            if ($dateParseResult["warning_count"] !== 0 || $dateParseResult["error_count"] !== 0) {
                 $errors[] = "Invalid date";
             }
         }
