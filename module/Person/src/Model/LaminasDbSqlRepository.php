@@ -63,6 +63,7 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
     public function getAll()
     {
         $sql       = new Sql($this->db);
+
         $select    = $sql->select('person');
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
