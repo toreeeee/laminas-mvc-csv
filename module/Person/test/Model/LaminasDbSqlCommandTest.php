@@ -2,6 +2,7 @@
 
 namespace PersonTest\Model;
 
+use Album\Model\AlbumTable;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\DriverInterface;
@@ -10,8 +11,11 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Laminas\Db\Adapter\StatementContainerInterface;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\ResultSet\ResultSetInterface;
 use Laminas\Db\Sql\Platform\Platform;
+use Laminas\Db\Sql\Sql;
+use Laminas\ServiceManager\ServiceManager;
 use Person\Model\LaminasDbSqlCommand;
 use Person\Model\Person;
 use phpDocumentor\Reflection\Types\This;
@@ -19,7 +23,29 @@ use PHPUnit\Framework\TestCase;
 
 class LaminasDbSqlCommandTest extends TestCase
 {
-    // gibt keine!
+    public function testUpdatePerson()
+    {
+        $select = $this->createMock(Sql::class);
+
+        $mockDbAdapter = $this->createMock(AdapterInterface::class);
+        $statement = $this->createMock(StatementInterface::class);
+
+        $sql = $this->createMock(Sql::class);
+        $sql->method("select")->willReturn($select);
+        $sql->method("update")->willReturn($statement);
+        $sql->method("prepareStatementForSqlObject")->willReturn($statement);
+
+        $result = $this->createMock(ResultInterface::class);
+
+        $statement->method("execute")->with()->willReturn($result);
+
+        $sql = new LaminasDbSqlCommand($mockDbAdapter, $sql);
+
+        $person = new Person("first", "last", "none", 500, 1);
+
+        $this->assertSame($person, $sql->updatePerson($person));
+    }
+
 
 //    private AdapterInterface $adapter;
 //

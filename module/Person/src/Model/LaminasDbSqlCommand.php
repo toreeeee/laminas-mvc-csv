@@ -13,10 +13,12 @@ use RuntimeException;
 class LaminasDbSqlCommand implements PersonCommandInterface
 {
     private AdapterInterface $db;
+    private ?Sql $sql;
 
-    public function __construct(AdapterInterface $db)
+    public function __construct(AdapterInterface $db, ?Sql $sql = null)
     {
         $this->db = $db;
+        $this->sql = $sql;
     }
 
     public function updatePerson(Person $person): Person
@@ -34,7 +36,7 @@ class LaminasDbSqlCommand implements PersonCommandInterface
         ]);
         $update->where(['id = ?' => $person->getId()]);
 
-        $sql = new Sql($this->db);
+        $sql = $this->sql ? $this->sql : new Sql($this->db);
         $statement = $sql->prepareStatementForSqlObject($update);
         $result = $statement->execute();
 
