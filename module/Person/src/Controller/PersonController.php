@@ -82,7 +82,7 @@ class PersonController extends AbstractActionController
         try {
             $person = $this->personRepository->getById($id);
         } catch (InvalidArgumentException $ex) {
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('person');
         }
 
         $request = $this->getRequest();
@@ -123,6 +123,7 @@ class PersonController extends AbstractActionController
         try {
             $post = $this->command->insertPerson($data);
         } catch (\Exception $ex) {
+            // TODO: add error handling support
             throw $ex;
         }
 
@@ -168,9 +169,6 @@ class PersonController extends AbstractActionController
         header("Content-Disposition: attachment; filename=\"invalid.csv\"");
         echo($this->encoder->encode($table->getHeadings(), $table->getInvalidRows()));
         die;
-
-
-//        return ["form" => $form];
     }
 
     public function exportAction()
