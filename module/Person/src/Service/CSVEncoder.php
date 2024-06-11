@@ -3,6 +3,7 @@
 namespace Person\Service;
 
 use Person\Service\CSVFile\CSVRow;
+use RuntimeException;
 
 class CSVEncoder implements TableFileEncoderInterface
 {
@@ -28,6 +29,9 @@ class CSVEncoder implements TableFileEncoderInterface
         $text = implode($this->getDelimiter(), $headings) . "\n";
 
         foreach ($rows as $row) {
+            if (count($row->getColumns()) !== count($headings)) {
+                throw new RuntimeException("Headings size doesn't match row size");
+            }
             $text .= implode($this->getDelimiter(), $row->getColumns()) . "\n";
         }
 

@@ -10,20 +10,29 @@ use PHPUnit\Framework\TestCase;
 
 class PersonRowValidatorTest extends TestCase
 {
-    public function testValidation()
+    private PersonRowValidator $validator;
+
+    public function setUp(): void
     {
-        $validator = new PersonRowValidator();
+        $this->validator = new PersonRowValidator();
+    }
 
-        $this->assertInstanceOf(RowValidatorInterface::class, $validator);
+    public function testValidationValid()
+    {
+        $this->assertInstanceOf(RowValidatorInterface::class, $this->validator);
 
-        $validResult = $validator->validate(new CSVRow(["2001-08-21", "Edgar", "Nentzl", 500]));
-        $invalidResult = $validator->validate(new CSVRow(["2001-08-32", "Edgar", "Nentzl", 500]));
-
+        $validResult = $this->validator->validate(new CSVRow(["2001-08-21", "Edgar", "Nentzl", 500]));
 
         $this->assertInstanceOf(RowValidationResult::class, $validResult);
-
         $this->assertTrue($validResult->isOk());
         $this->assertSame(0, count($validResult->getErrors()));
+    }
+
+    public function testValidationInvalid()
+    {
+        $this->assertInstanceOf(RowValidatorInterface::class, $this->validator);
+
+        $invalidResult = $this->validator->validate(new CSVRow(["2001-08-32", "Edgar", "Nentzl", 500]));
 
         $this->assertInstanceOf(RowValidationResult::class, $invalidResult);
         $this->assertFalse($invalidResult->isOk());

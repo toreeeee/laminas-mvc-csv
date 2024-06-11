@@ -10,9 +10,13 @@ class RowValidationResultTest extends TestCase
     public function testRowValidationResultOk()
     {
         $validResult = new RowValidationResult([]);
-        $invalidResult = new RowValidationResult(["some error"]);
 
         $this->assertTrue($validResult->isOk());
+    }
+    public function testRowValidationResultNotOk()
+    {
+        $invalidResult = new RowValidationResult(["some error"]);
+
         $this->assertFalse($invalidResult->isOk());
         $this->assertSame(["some error"], $invalidResult->getErrors());
     }

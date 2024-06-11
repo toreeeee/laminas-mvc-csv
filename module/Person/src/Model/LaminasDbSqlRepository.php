@@ -54,11 +54,6 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         $resultSet->initialize($result);
         $person = $resultSet->current();
 
-        print_r($resultSet);
-
-//        print_r($result);
-//        print_r($person);
-
         if (!$person) {
             throw new InvalidArgumentException(sprintf(
                 'Person with identifier "%s" not found.',

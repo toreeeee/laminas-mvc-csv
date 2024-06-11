@@ -1,6 +1,6 @@
 <?php
 
- namespace Person\Service\CSVFile;
+namespace Person\Service\CSVFile;
 
 class RowValidationResult
 {

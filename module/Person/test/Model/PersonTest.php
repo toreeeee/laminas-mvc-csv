@@ -2,7 +2,6 @@
 
 namespace PersonTest\Model;
 
-use Album\Model\Album;
 use Person\Model\Person;
 use PHPUnit\Framework\TestCase;
 

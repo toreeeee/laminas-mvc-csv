@@ -1,8 +1,8 @@
 <?php
 
- namespace Person\Service\CSVFile;
+namespace Person\Service\CSVFile;
 
- use Person\Service\TableRowInterface;
+use Person\Service\TableRowInterface;
 
 class CSVRow implements TableRowInterface
 {

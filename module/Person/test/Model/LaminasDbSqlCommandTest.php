@@ -2,23 +2,12 @@
 
 namespace PersonTest\Model;
 
-use Album\Model\AlbumTable;
-use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Driver\DriverInterface;
-//use Laminas\Db\Adapter\Driver\Pdo;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Adapter\Platform\PlatformInterface;
-use Laminas\Db\Adapter\StatementContainerInterface;
-use Laminas\Db\ResultSet\ResultSet;
-use Laminas\Db\ResultSet\ResultSetInterface;
-use Laminas\Db\Sql\Platform\Platform;
 use Laminas\Db\Sql\Sql;
-use Laminas\ServiceManager\ServiceManager;
 use Person\Model\LaminasDbSqlCommand;
 use Person\Model\Person;
-use phpDocumentor\Reflection\Types\This;
 use PHPUnit\Framework\TestCase;
 
 class LaminasDbSqlCommandTest extends TestCase

@@ -9,6 +9,14 @@ class CSVRowTest extends TestCase
 {
     public function testIsValid()
     {
+        $row = new CSVRow(["hello", "world"], 2);
+
+        $this->assertTrue($row->isValid());
+        $this->assertSame(0, count($row->getErrors()));
+    }
+
+    public function testIsInvalid()
+    {
         $row = new CSVRow(["hello", "world"], 3);
 
         $this->assertFalse($row->isValid());

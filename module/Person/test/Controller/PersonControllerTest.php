@@ -2,7 +2,6 @@
 
 namespace PersonTest\Controller;
 
-use Application\Controller\IndexController;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
