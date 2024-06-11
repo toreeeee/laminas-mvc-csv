@@ -22,19 +22,23 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
 
     private Person $personPrototype;
 
+    private ?Sql $sql;
+
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Person $postPrototype
+        Person $postPrototype,
+        ?Sql $sql = null,
     ) {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->personPrototype = $postPrototype;
+        $this->sql = $sql;
     }
 
     public function getById(int $id): Person
     {
-        $sql = new Sql($this->db);
+        $sql = $this->sql ? $this->sql : new Sql($this->db);
         $select = $sql->select("person")->where(['id = ?' => $id]);
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -50,6 +54,11 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         $resultSet->initialize($result);
         $person = $resultSet->current();
 
+        print_r($resultSet);
+
+//        print_r($result);
+//        print_r($person);
+
         if (!$person) {
             throw new InvalidArgumentException(sprintf(
                 'Person with identifier "%s" not found.',
@@ -62,7 +71,7 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
 
     public function getAll()
     {
-        $sql       = new Sql($this->db);
+        $sql       = $this->sql ? $this->sql : new Sql($this->db);
 
         $select    = $sql->select('person');
         $statement = $sql->prepareStatementForSqlObject($select);

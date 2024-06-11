@@ -23,92 +23,95 @@ use PHPUnit\Framework\TestCase;
 
 class LaminasDbSqlCommandTest extends TestCase
 {
+    private AdapterInterface $adapter;
+    private StatementInterface $statement;
+
+    public function setUp(): void
+    {
+        $this->adapter = $this->createMock(AdapterInterface::class);
+        $this->statement = $this->createMock(StatementInterface::class);
+    }
+
     public function testUpdatePerson()
     {
-        $select = $this->createMock(Sql::class);
-
-        $mockDbAdapter = $this->createMock(AdapterInterface::class);
-        $statement = $this->createMock(StatementInterface::class);
-
         $sql = $this->createMock(Sql::class);
-        $sql->method("select")->willReturn($select);
-        $sql->method("update")->willReturn($statement);
-        $sql->method("prepareStatementForSqlObject")->willReturn($statement);
+        $sql->method("select")->willReturn($sql);
+        $sql->method("update")->willReturn($sql);
+        $sql->expects($this->once())->method("prepareStatementForSqlObject")->willReturn($this->statement);
 
         $result = $this->createMock(ResultInterface::class);
 
-        $statement->method("execute")->with()->willReturn($result);
+        $this->statement->method("execute")->with()->willReturn($result);
 
-        $sql = new LaminasDbSqlCommand($mockDbAdapter, $sql);
+        $cmd = new LaminasDbSqlCommand($this->adapter, $sql);
 
         $person = new Person("first", "last", "none", 500, 1);
 
-        $this->assertSame($person, $sql->updatePerson($person));
+        $this->assertSame($person, $cmd->updatePerson($person));
     }
 
+    public function testDeletePerson()
+    {
+        $sql = $this->createMock(Sql::class);
+        $sql->method("select")->willReturn($sql);
+        $sql->method("update")->willReturn($sql);
+        $sql->method("delete")->willReturn($sql);
+        $sql->expects($this->once())->method("prepareStatementForSqlObject")->willReturn($this->statement);
 
-//    private AdapterInterface $adapter;
-//
-//    private $command;
-//
-//    protected function setUp(): void
-//    {
-//        $this->adapter = $this->createMock(AdapterInterface::class);
-//        $platform = $this->createMock(PlatformInterface::class);
-//
-//        $platform->method("getName")->willReturn("SQLite");
-//
-//        $this->adapter->platform = $platform;
-//
-////        $this->adapter->platform = $platform;
-//
-//        $this->command = new LaminasDbSqlCommand($this->adapter);
-//    }
-//
-//    public function testUpdatePerson()
-//    {
-//        $resultSet = $this->createMock(ResultSetInterface::class);
-//
-////        $this->statement->expects($this->once())
-////            ->method("execute")
-////            ->willReturn($resultSet);
-//
-//        $driver = $this->createMock(DriverInterface::class);
-//        $platform = $this->createMock(Platform::class);
-//
-//
-//        $this->adapter->method("getDriver")->willReturn($driver);
-//
-//        $statement = $this->createMock(StatementInterface::class);
-//
-//        $driver->expects($this->once())
-//            ->method('createStatement')
-//            ->willReturn($statement);
-//
-//
-//        $platform = $this->createMock(PlatformInterface::class);
-//        $platform->method("getName")->willReturn("SQLite");
-//
-////        $statement->method("setObject")->willReturn($platform);
-//
-////        $driver->
-//
-////        $this->driver
-////            ->expects($this->once())
-////            ->method("createStatement")
-////            ->willReturn($this->statement);
-////
-////        $this->platform->expects($this->once())
-////            ->method("prepareStatement")
-////            ->willReturn($this->statement);
-//
-////        $this->adapter
-////            ->expects($this->once())
-////            ->method("getName")
-////            ->willReturn("Person");
-//
-//        $this->command->updatePerson(
-//            new Person("First", "Last", "01.01.2024", 500.0, 1)
-//        );
-//    }
+        $result = $this->createMock(ResultInterface::class);
+
+        $this->statement->method("execute")->with()->willReturn($result);
+
+        $cmd = new LaminasDbSqlCommand($this->adapter, $sql);
+
+        $person = new Person("first", "last", "none", 500, 1);
+
+        $this->assertTrue($cmd->deletePerson($person));
+    }
+
+    public function testInsertPerson()
+    {
+        $sql = $this->createMock(Sql::class);
+        $sql->method("select")->willReturn($sql);
+        $sql->method("update")->willReturn($sql);
+        $sql->method("delete")->willReturn($sql);
+        $sql->expects($this->once())->method("prepareStatementForSqlObject")->willReturn($this->statement);
+
+        $result = $this->createMock(ResultInterface::class);
+        $result->method("getGeneratedValue")->willReturn(1);
+
+        $this->statement->method("execute")->with()->willReturn($result);
+
+        $cmd = new LaminasDbSqlCommand($this->adapter, $sql);
+
+        $person = new Person("first", "last", "none", 500, null);
+
+        $inserted = $cmd->insertPerson($person);
+
+        $this->assertSame(1, $inserted->getId());
+    }
+
+    public function testInsertManyPersons()
+    {
+        $sql = $this->createMock(Sql::class);
+        $sql->method("select")->willReturn($sql);
+        $sql->method("update")->willReturn($sql);
+        $sql->method("delete")->willReturn($sql);
+        $sql->expects($this->exactly(2))->method("prepareStatementForSqlObject")->willReturn($this->statement);
+
+        $result = $this->createMock(ResultInterface::class);
+        $result->method("getGeneratedValue")->willReturn(1);
+
+        $this->statement->method("execute")->with()->willReturn($result);
+
+        $cmd = new LaminasDbSqlCommand($this->adapter, $sql);
+
+        $person = new Person("first", "last", "none", 500, null);
+
+        $values = [$person, $person];
+        $inserted = $cmd->insertManyPersons($values);
+
+        $this->assertSame(1, $inserted[0]->getId());
+        $this->assertSame(1, $inserted[1]->getId());
+    }
 }

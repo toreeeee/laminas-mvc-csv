@@ -63,6 +63,7 @@ class Person
 
     public function getFormattedBirthday(): string
     {
+        // shouldn't be in model prob
         $date = date_create($this->getBirthday());
 
         return date_format($date, 'd.m.Y');
@@ -75,6 +76,7 @@ class Person
 
     public function getFormattedSalary(): string
     {
+        // shouldn't be in model prob
         $fmt = new NumberFormatter("de_De", NumberFormatter::CURRENCY);
 
         return $fmt->formatCurrency($this->getSalary(), "EUR");
