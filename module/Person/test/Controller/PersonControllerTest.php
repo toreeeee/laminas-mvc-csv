@@ -134,7 +134,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
         $services->setService("config", $this->updateConfig($services->get("config")));
         $services->setService(LaminasDbSqlCommand::class, $this->mockLaminasDbSqlCommand());
-        $services->setService(LaminasDbSqlRepository::class, $this->mockLaminasDbSqrlRepository());
+        $services->setService(LaminasDbSqlRepository::class, $this->mockLaminasDbSqlRepository());
 
         $services->setAllowOverride(false);
     }
@@ -152,7 +152,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         return $this->command;
     }
 
-    protected function mockLaminasDbSqrlRepository(): LaminasDbSqlRepository
+    protected function mockLaminasDbSqlRepository(): LaminasDbSqlRepository
     {
         $this->repository = $this->createMock(LaminasDbSqlRepository::class);
 
@@ -164,7 +164,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         $paginated->method("setCurrentPageNumber")->willReturn($paginated);
         $paginated->method("setItemCountPerPage")->willReturn($paginated);
         $paginated->method("getCurrentItems")->willReturn([]);
-        $paginated->method("getPages")->willReturn((object)[]);
+        $paginated->method("getPages")->willReturn(new \stdClass());
         $this->repository->method("getAllPaginated")->willReturn($paginated);
 
         return $this->repository;
