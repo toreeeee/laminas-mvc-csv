@@ -18,63 +18,6 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
     private $repository;
 
-    protected function configureServiceManager(ServiceManager $services)
-    {
-        $services->setAllowOverride(true);
-
-        $services->setService("config", $this->updateConfig($services->get("config")));
-        $services->setService(LaminasDbSqlCommand::class, $this->mockLaminasDbSqlCommand());
-        $services->setService(LaminasDbSqlRepository::class, $this->mockLaminasDbSqrlRepository());
-
-        $services->setAllowOverride(false);
-    }
-
-    protected function updateConfig($config)
-    {
-        $config["db"] = [];
-
-        return $config;
-    }
-
-    protected function setUp(): void
-    {
-        $configOverrides = [];
-
-        $this->setApplicationConfig(ArrayUtils::merge(
-            include __DIR__ . '/../../../../config/application.config.php',
-            $configOverrides
-        ));
-
-        parent::setUp();
-
-        $this->configureServiceManager($this->getApplicationServiceLocator());
-    }
-
-    protected function mockLaminasDbSqlCommand(): LaminasDbSqlCommand
-    {
-        $this->command = $this->createMock(LaminasDbSqlCommand::class);
-        return $this->command;
-    }
-
-    protected function mockLaminasDbSqrlRepository(): LaminasDbSqlRepository
-    {
-        $this->repository = $this->createMock(LaminasDbSqlRepository::class);
-
-        $result = $this->createMock(ResultSet::class);
-        $result->method("toArray")->willReturn([]);
-        $this->repository->method("getAll")->willReturn($result);
-
-//        $adapter = $this->createMock(AdapterInterface::class);
-        $paginated = $this->createMock(Paginator::class);
-        $paginated->method("setCurrentPageNumber")->willReturn($paginated);
-        $paginated->method("setItemCountPerPage")->willReturn($paginated);
-        $paginated->method("getCurrentItems")->willReturn([]);
-        $paginated->method("getPages")->willReturn((object)[]);
-        $this->repository->method("getAllPaginated")->willReturn($paginated);
-
-        return $this->repository;
-    }
-
     public function testIndexActionCanBeAccessed(): void
     {
         $this->dispatch('/person', 'GET');
@@ -169,6 +112,62 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch("/person/1/delete", "POST", $postData);
         $this->assertResponseStatusCode(302);
         $this->assertRedirectTo("/person");
+    }
+
+    protected function setUp(): void
+    {
+        $configOverrides = [];
+
+        $this->setApplicationConfig(ArrayUtils::merge(
+            include __DIR__ . '/../../../../config/application.config.php',
+            $configOverrides
+        ));
+
+        parent::setUp();
+
+        $this->configureServiceManager($this->getApplicationServiceLocator());
+    }
+
+    protected function configureServiceManager(ServiceManager $services)
+    {
+        $services->setAllowOverride(true);
+
+        $services->setService("config", $this->updateConfig($services->get("config")));
+        $services->setService(LaminasDbSqlCommand::class, $this->mockLaminasDbSqlCommand());
+        $services->setService(LaminasDbSqlRepository::class, $this->mockLaminasDbSqrlRepository());
+
+        $services->setAllowOverride(false);
+    }
+
+    protected function updateConfig($config)
+    {
+        $config["db"] = [];
+
+        return $config;
+    }
+
+    protected function mockLaminasDbSqlCommand(): LaminasDbSqlCommand
+    {
+        $this->command = $this->createMock(LaminasDbSqlCommand::class);
+        return $this->command;
+    }
+
+    protected function mockLaminasDbSqrlRepository(): LaminasDbSqlRepository
+    {
+        $this->repository = $this->createMock(LaminasDbSqlRepository::class);
+
+        $result = $this->createMock(ResultSet::class);
+        $result->method("toArray")->willReturn([]);
+        $this->repository->method("getAll")->willReturn($result);
+
+        $paginated = $this->createMock(Paginator::class);
+        $paginated->method("setCurrentPageNumber")->willReturn($paginated);
+        $paginated->method("setItemCountPerPage")->willReturn($paginated);
+        $paginated->method("getCurrentItems")->willReturn([]);
+        $paginated->method("getPages")->willReturn((object)[]);
+        $this->repository->method("getAllPaginated")->willReturn($paginated);
+
+        return $this->repository;
     }
 
     // TODO: test import, export, add action
