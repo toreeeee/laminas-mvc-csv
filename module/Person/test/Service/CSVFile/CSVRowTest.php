@@ -22,4 +22,30 @@ class CSVRowTest extends TestCase
         $this->assertFalse($row->isValid());
         $this->assertGreaterThan(0, count($row->getErrors()));
     }
+    
+    public function testGetErrors()
+    {
+        $row = new CSVRow(["hello", "world"], 3);
+
+        $this->assertGreaterThan(0, count($row->getErrors()));
+    }
+
+    public function testAddColumn()
+    {
+        $row = new CSVRow(["hello", "world"]);
+
+        $this->assertSame(2, count($row->getColumns()));
+        $row->addColumn("new col");
+        $this->assertSame(3, count($row->getColumns()));
+        $cols = $row->getColumns();
+        $this->assertSame("new col", end($cols));
+    }
+
+    public function testGetColumns()
+    {
+        $cols = ["hello", "world", "bla", "bli"];
+        $row = new CSVRow($cols);
+
+        $this->assertSame($cols, $row->getColumns());
+    }
 }

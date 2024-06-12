@@ -20,14 +20,14 @@ class LaminasDbSqlRepositoryTest extends TestCase
     private AdapterInterface $adapter;
     private StatementInterface $statement;
 
-    public function setUp(): void
-    {
-        $this->adapter = $this->createMock(AdapterInterface::class);
-        $this->statement = $this->createMock(StatementInterface::class);
-    }
+//    public function setUp(): void
+//    {
+//        $this->adapter = $this->createMock(AdapterInterface::class);
+//        $this->statement = $this->createMock(StatementInterface::class);
+//    }
 
-    public function testGetById()
-    {
+//    public function testGetById()
+//    {
 //        $sql = $this->createMock(Sql::class);
 //        $sql->method("update")->willReturn($sql);
 //        $select = $this->createMock(Select::class);
@@ -59,14 +59,14 @@ class LaminasDbSqlRepositoryTest extends TestCase
 //        $person = new Person("first", "last", "none", 500, 1);
 //
 //        $this->assertSame($person, $cmd->getById(1));
-    }
+//    }
 
-    public function testGetAll()
-    {
-        //
-    }
-
-    public function testGetAllPaginated()
-    {
-    }
+//    public function testGetAll()
+//    {
+//        //
+//    }
+//
+//    public function testGetAllPaginated()
+//    {
+//    }
 }
