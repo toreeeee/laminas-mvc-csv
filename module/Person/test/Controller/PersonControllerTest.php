@@ -2,6 +2,9 @@
 
 namespace PersonTest\Controller;
 
+use Laminas\Db\Adapter\Driver\Pdo\Result;
+use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
@@ -58,6 +61,12 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
     {
         $this->repository = $this->createMock(LaminasDbSqlRepository::class);
 
+        $result = $this->createMock(ResultSet::class);
+
+        $result->method("toArray")->willReturn([]);
+
+        $this->repository->method("getAll")->willReturn($result);
+
         return $this->repository;
     }
 
@@ -113,7 +122,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
             "birthday[month]" => "01",
             "birthday[day]" => "01",
             "birthday[year]" => "2012",
-            "salary" => 500
+            "salary" => 500,
         ];
 
         $this->dispatch("/person/1/edit", "POST", $postData);
@@ -134,7 +143,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
             "birthday[day]" => "01",
             "birthday[year]" => "2012",
             "salary" => 500,
-            "confirm" => "Delete"
+            "confirm" => "Delete",
         ];
 
         $this->dispatch("/person/1/delete", "POST", $postData);
@@ -149,7 +158,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
         $postData = [
             "id" => "1",
-            "confirm" => "no"
+            "confirm" => "no",
         ];
 
         $this->dispatch("/person/1/delete", "POST", $postData);

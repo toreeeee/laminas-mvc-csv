@@ -22,8 +22,8 @@ class CSVRow implements TableRowInterface
     private array $validators = [];
 
     /**
-     * @param array<string> $columns
-     * @param int $expectedColumnsCount
+     * @param array<string>                $columns
+     * @param int                          $expectedColumnsCount
      * @param array<RowValidatorInterface> $validators
      */
     public function __construct(array $columns, int $expectedColumnsCount = -1, array $validators = [])
@@ -31,6 +31,11 @@ class CSVRow implements TableRowInterface
         $this->columns = $columns;
         if ($expectedColumnsCount !== -1 && count($this->columns) !== $expectedColumnsCount) {
             $this->errors[] = "Amount of columns does not match header count.";
+        }
+        if (count($this->columns) < $expectedColumnsCount) {
+            while (count($this->columns) !== $expectedColumnsCount) {
+                $this->columns[] = "";
+            }
         }
         $this->validators = $validators;
     }
