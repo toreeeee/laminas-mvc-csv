@@ -4,6 +4,7 @@ namespace PersonTest\Service;
 
 use Person\Service\CSVEncoder;
 use Person\Service\CSVFile\CSVRow;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -11,7 +12,7 @@ class CSVEncoderTest extends TestCase
 {
     private CSVEncoder $encoder;
 
-    public function testEncodeWithValidInput()
+    public function testEncodeWithValidInput(): void
     {
         $encoded = $this->encoder->encode(
             ["first", "second", "third"],
@@ -21,7 +22,7 @@ class CSVEncoderTest extends TestCase
         $this->assertSame("first : second : third\nhello : hello : hello\n", $encoded);
     }
 
-    public function testEncodeWithInalidInput()
+    public function testEncodeWithMismatchOfColumnAndHeadingCountShouldThrow(): void
     {
         $this->expectException(RuntimeException::class);
 

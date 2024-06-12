@@ -37,9 +37,9 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         $this->sql = $sql;
     }
 
-    public function getById(int $id): Person
+    public function findById(int $id): Person
     {
-        $sql = $this->sql ? $this->sql : new Sql($this->db);
+        $sql = $this->sql ?: new Sql($this->db);
         $select = $sql->select("person")->where(['id = ?' => $id]);
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -65,9 +65,9 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         return $person;
     }
 
-    public function getAll()
+    public function findAll()
     {
-        $sql = $this->sql ? $this->sql : new Sql($this->db);
+        $sql = $this->sql ?: new Sql($this->db);
 
         $select = $sql->select('person');
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -83,7 +83,7 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
         return $resultSet;
     }
 
-    public function getAllPaginated()
+    public function findAllPaginated()
     {
         $select = new Select("person");
 

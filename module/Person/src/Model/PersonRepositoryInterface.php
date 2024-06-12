@@ -4,7 +4,7 @@ namespace Person\Model;
 
 interface PersonRepositoryInterface
 {
-    public function getById(int $id): Person;
+    public function findById(int $id): Person;
 
-    public function getAll();
+    public function findAll();
 }

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true">
+<phpunit colors="true" testdox="true">
     <testsuites>
         <testsuite name="Laminas MVC Application Test Suite">
             <directory>./module/Application/test</directory>
         </testsuite>
         <testsuite name="Album">
             <directory>./module/Album/test</directory>
+        </testsuite>
+        <testsuite name="Person">
+            <directory>./module/Person/test</directory>
         </testsuite>
     </testsuites>
 </phpunit>

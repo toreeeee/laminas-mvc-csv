@@ -36,7 +36,7 @@ class PersonController extends AbstractActionController
 
     public function indexAction()
     {
-        $paginator = $this->personRepository->getAllPaginated();
+        $paginator = $this->personRepository->findAllPaginated();
         $page = (int)$this->params()->fromQuery("page", 1);
         $page = ($page < 1) ? 1 : $page;
         $paginator->setCurrentPageNumber($page);
@@ -52,7 +52,7 @@ class PersonController extends AbstractActionController
 
         $id = $this->params()->fromRoute('id', 0);
 
-        $person = $this->personRepository->getById($id);
+        $person = $this->personRepository->findById($id);
 
         $form = new PersonForm();
         $form->bind($person);
@@ -81,7 +81,7 @@ class PersonController extends AbstractActionController
         }
 
         try {
-            $person = $this->personRepository->getById($id);
+            $person = $this->personRepository->findById($id);
         } catch (InvalidArgumentException $ex) {
             return $this->redirect()->toRoute('person');
         }
@@ -183,7 +183,7 @@ class PersonController extends AbstractActionController
 
     public function exportAction()
     {
-        $persons = $this->personRepository->getAll();
+        $persons = $this->personRepository->findAll();
         $encoded = $this->encoder->encode(["birthday", "first_name", "last_name", "salary"], array_map(function ($it) {
             return new CSVRow([$it["birthday"], $it["first_name"], $it["last_name"], $it["salary"]], 4);
         }, $persons->toArray()));

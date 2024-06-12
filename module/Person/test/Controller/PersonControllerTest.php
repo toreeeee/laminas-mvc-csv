@@ -37,7 +37,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerClass('PersonController');
         $this->assertMatchedRouteName('person/add');
     }
-
+    
     public function testImportActionCanBeAccessed(): void
     {
         $this->dispatch('/person/import', 'POST');
@@ -158,14 +158,14 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
         $result = $this->createMock(ResultSet::class);
         $result->method("toArray")->willReturn([]);
-        $this->repository->method("getAll")->willReturn($result);
+        $this->repository->method("findAll")->willReturn($result);
 
         $paginated = $this->createMock(Paginator::class);
         $paginated->method("setCurrentPageNumber")->willReturn($paginated);
         $paginated->method("setItemCountPerPage")->willReturn($paginated);
         $paginated->method("getCurrentItems")->willReturn([]);
         $paginated->method("getPages")->willReturn(new \stdClass());
-        $this->repository->method("getAllPaginated")->willReturn($paginated);
+        $this->repository->method("findAllPaginated")->willReturn($paginated);
 
         return $this->repository;
     }
