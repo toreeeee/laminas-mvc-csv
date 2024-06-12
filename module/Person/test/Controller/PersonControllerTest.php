@@ -169,6 +169,4 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
         return $this->repository;
     }
-
-    // TODO: test import, export, add action
 }
