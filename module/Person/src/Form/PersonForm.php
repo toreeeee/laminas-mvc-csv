@@ -55,7 +55,7 @@ class PersonForm extends Form
             'name' => 'birthday',
             'options' => [
                 'label' => 'Geburtstag',
-                "render_delimiters" => false
+                "render_delimiters" => false,
             ],
         ]);
 
@@ -66,11 +66,11 @@ class PersonForm extends Form
                 'label' => 'Gehalt',
             ],
             "validators" => [
-                new RegexValidator('/^[+]?\d+([.]\d+)?/')
+                new RegexValidator('/^[+]?\d+([.]\d+)?/'),
             ],
             "attributes" => [
                 "min" => 1,
-            ]
+            ],
         ]);
 
         $this->add([

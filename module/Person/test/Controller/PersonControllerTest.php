@@ -2,9 +2,8 @@
 
 namespace PersonTest\Controller;
 
-use Laminas\Db\Adapter\Driver\Pdo\Result;
-use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Paginator\Paginator;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\Stdlib\ArrayUtils;
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
@@ -62,10 +61,16 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         $this->repository = $this->createMock(LaminasDbSqlRepository::class);
 
         $result = $this->createMock(ResultSet::class);
-
         $result->method("toArray")->willReturn([]);
-
         $this->repository->method("getAll")->willReturn($result);
+
+//        $adapter = $this->createMock(AdapterInterface::class);
+        $paginated = $this->createMock(Paginator::class);
+        $paginated->method("setCurrentPageNumber")->willReturn($paginated);
+        $paginated->method("setItemCountPerPage")->willReturn($paginated);
+        $paginated->method("getCurrentItems")->willReturn([]);
+        $paginated->method("getPages")->willReturn((object)[]);
+        $this->repository->method("getAllPaginated")->willReturn($paginated);
 
         return $this->repository;
     }

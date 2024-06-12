@@ -21,7 +21,7 @@ class ImportPersonForm extends Form
             ],
             'attributes' => [
                 "accept" => ".csv",
-                "required" => true
+                "required" => true,
             ],
         ]);
 

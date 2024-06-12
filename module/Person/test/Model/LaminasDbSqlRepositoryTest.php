@@ -3,16 +3,7 @@
 namespace PersonTest\Model;
 
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Driver\Pdo\Result;
-use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\ResultSet\ResultSet;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Sql;
-use Laminas\Hydrator\ReflectionHydrator;
-use Person\Model\LaminasDbSqlCommand;
-use Person\Model\LaminasDbSqlRepository;
-use Person\Model\Person;
 use PHPUnit\Framework\TestCase;
 
 class LaminasDbSqlRepositoryTest extends TestCase

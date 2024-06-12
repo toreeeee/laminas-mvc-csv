@@ -13,7 +13,6 @@ use Person\Model\PersonRepositoryInterface;
 use Person\Service\CSVFile\CSVRow;
 use Person\Service\TableFileEncoderInterface;
 use Person\Service\TableFileParserInterface;
-use function PHPUnit\Framework\isEmpty;
 
 class PersonController extends AbstractActionController
 {

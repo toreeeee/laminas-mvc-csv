@@ -31,9 +31,10 @@ class Person
         ?string $firstName = null,
         ?string $lastName = null,
         ?string $birthday = null,
-        ?float $salary = null,
-        ?int $id = null
-    ) {
+        ?float  $salary = null,
+        ?int    $id = null,
+    )
+    {
         $this->first_name = $firstName;
         $this->last_name = $lastName;
         $this->birthday = $birthday;

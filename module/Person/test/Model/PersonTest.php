@@ -15,7 +15,7 @@ class PersonTest extends TestCase
             "last_name" => "Last",
             "id" => 123,
             "birthday" => "01.0.1.2024",
-            "salary" => 500.0
+            "salary" => 500.0,
         ];
 
         $person->exchangeArray($data);

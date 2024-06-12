@@ -25,11 +25,12 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
     private ?Sql $sql;
 
     public function __construct(
-        AdapterInterface $db,
+        AdapterInterface  $db,
         HydratorInterface $hydrator,
-        Person $postPrototype,
-        ?Sql $sql = null,
-    ) {
+        Person            $postPrototype,
+        ?Sql              $sql = null,
+    )
+    {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->personPrototype = $postPrototype;
@@ -66,11 +67,11 @@ class LaminasDbSqlRepository implements PersonRepositoryInterface
 
     public function getAll()
     {
-        $sql       = $this->sql ? $this->sql : new Sql($this->db);
+        $sql = $this->sql ? $this->sql : new Sql($this->db);
 
-        $select    = $sql->select('person');
+        $select = $sql->select('person');
         $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
+        $result = $statement->execute();
 
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];

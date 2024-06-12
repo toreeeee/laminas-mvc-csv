@@ -5,7 +5,6 @@ namespace PersonTest\Service;
 use Person\Service\CSVFile\CSVRow;
 use Person\Service\TableFile;
 use PHPUnit\Framework\TestCase;
-use TableRow;
 
 class TableFileTest extends TestCase
 {

@@ -1,11 +1,17 @@
 <div class="d-flex justify-content-between align-items-center">
     <h1>Personen</h1>
-   <div class="d-flex gap-1">
-       <a href="<?= $this->url("person/export"); ?>" class="btn h-auto w-auto btn-outline-dark">Export</a>
-       <a href="<?= $this->url("person/import"); ?>" class="btn h-auto w-auto btn-dark">Import</a>
-       <a href="<?= $this->url("person/add"); ?>" class="btn h-auto w-auto btn-dark">Add</a>
+    <div class="d-flex gap-1">
+        <a href="<?= $this->url(
+            "person/export"
+        ) ?>" class="btn h-auto w-auto btn-outline-dark">Export</a>
+        <a href="<?= $this->url(
+            "person/import"
+        ) ?>" class="btn h-auto w-auto btn-dark">Import</a>
+        <a href="<?= $this->url(
+            "person/add"
+        ) ?>" class="btn h-auto w-auto btn-dark">Add</a>
 
-   </div>
+    </div>
 </div>
 
 <table class="table">
@@ -18,37 +24,43 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($this->pagination as $person): ?>
-    <tr>
-        <td>
-            <?= $this->escapeHtml($person->getFullName()) ?>
-        </td>
-        <td>
-            <?= $this->escapeHtml($person->getFormattedBirthday()) ?>
-        </td>
-        <td>
-            <?= $this->escapeHtml($person->getFormattedSalary()) ?>
-        </td>
-        <td class="flex-row justify-content-end d-flex gap-1">
-            <a type="button" class="btn btn-dark" href="<?= $this->url("person/edit", [
-                "id" => $person->getId(),
-            ]) ?>">Edit</a>
-            <a type="button" class="btn btn-danger" href="<?= $this->url("person/delete", [
-                "id" => $person->getId(),
-            ]) ?>">Delete</a>
-        </td>
-    </tr>
-    <?php endforeach ?>
+    <?php foreach ($this->pagination->getIterator() as $person): ?>
+        <tr>
+            <td>
+                <?= $this->escapeHtml($person->getFullName()) ?>
+            </td>
+            <td>
+                <?= $this->escapeHtml($person->getFormattedBirthday()) ?>
+            </td>
+            <td>
+                <?= $this->escapeHtml($person->getFormattedSalary()) ?>
+            </td>
+            <td class="flex-row justify-content-end d-flex gap-1">
+                <a type="button" class="btn btn-dark" href="<?= $this->url(
+                    "person/edit",
+                    [
+                        "id" => $person->getId(),
+                    ]
+                ) ?>">Edit</a>
+                <a type="button" class="btn btn-danger" href="<?= $this->url(
+                    "person/delete",
+                    [
+                        "id" => $person->getId(),
+                    ]
+                ) ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
     </tbody>
 </table>
 
 <?= $this->paginationControl(
-// The paginator object:
+    // The paginator object:
     $this->pagination,
     // The scrolling style:
-    'sliding',
+    "sliding",
     // The partial to use to render the control:
-    'partial/paginator',
+    "partial/paginator",
     // The route to link to when a user clicks a control link:
-    ['route' => 'person']
+    ["route" => "person"]
 ) ?>

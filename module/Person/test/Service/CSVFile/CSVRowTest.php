@@ -22,7 +22,7 @@ class CSVRowTest extends TestCase
         $this->assertFalse($row->isValid());
         $this->assertGreaterThan(0, count($row->getErrors()));
     }
-    
+
     public function testGetErrors()
     {
         $row = new CSVRow(["hello", "world"], 3);

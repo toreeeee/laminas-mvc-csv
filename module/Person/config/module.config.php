@@ -4,7 +4,6 @@ namespace Person;
 
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
-use Laminas\ServiceManager\Factory\InvokableFactory;
 use Person\Controller\PersonController;
 use Person\Factory\CSVEncoderFactory;
 use Person\Factory\CSVPersonParserFactory;
@@ -18,7 +17,7 @@ return [
             Model\PersonRepositoryInterface::class => Model\LaminasDbSqlRepository::class,
             Model\PersonCommandInterface::class => Model\LaminasDbSqlCommand::class,
             Service\TableFileParserInterface::class => Service\CSVParser::class,
-            Service\TableFileEncoderInterface::class => Service\CSVEncoder::class
+            Service\TableFileEncoderInterface::class => Service\CSVEncoder::class,
 
         ],
         "factories" => [
@@ -26,12 +25,12 @@ return [
             Model\LaminasDbSqlCommand::class => LaminasDbSqlCommandFactory::class,
             Service\CSVParser::class => CSVPersonParserFactory::class,
             Service\CSVEncoder::class => CSVEncoderFactory::class,
-        ]
+        ],
     ],
     'controllers' => [
         'factories' => [
             PersonController::class => PersonControllerFactory::class,
-        ]
+        ],
     ],
     'router' => [
         // Open configuration for all possible routes
@@ -52,7 +51,7 @@ return [
                     ],
                 ],
                 "may_terminate" => true,
-                'child_routes'  => [
+                'child_routes' => [
                     "add" => [
                         "type" => Segment::class,
                         "options" => [
@@ -60,7 +59,7 @@ return [
                             "defaults" => [
                                 "action" => "add",
                             ],
-                        ]
+                        ],
                     ],
                     "import" => [
                         "type" => Segment::class,
@@ -69,7 +68,7 @@ return [
                             "defaults" => [
                                 "action" => "import",
                             ],
-                        ]
+                        ],
                     ],
                     "export" => [
                         "type" => Segment::class,
@@ -78,7 +77,7 @@ return [
                             "defaults" => [
                                 "action" => "export",
                             ],
-                        ]
+                        ],
                     ],
                     "edit" => [
                         "type" => Segment::class,
@@ -89,8 +88,8 @@ return [
                             ],
                             "constraints" => [
                                 "id" => "[1-9]\d*",
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                     "delete" => [
                         "type" => Segment::class,
@@ -101,8 +100,8 @@ return [
                             ],
                             "constraints" => [
                                 "id" => "[1-9]\d*",
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -111,6 +110,6 @@ return [
     "view_manager" => [
         "template_path_stack" => [
             __DIR__ . '/../view',
-        ]
-    ]
+        ],
+    ],
 ];
