@@ -5,6 +5,7 @@ namespace Person\Service;
 interface TableRowInterface
 {
     public function isValid(): bool;
+
     public function getErrorMessage(): ?string;
 
     /**

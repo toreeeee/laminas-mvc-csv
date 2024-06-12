@@ -1,9 +1,9 @@
 <div class="p-4 border-1 border rounded-2 shadow shadow-sm">
-<h1>Delete person</h1>
+    <h1>Delete person</h1>
 
-<p>Are you sure you want to delete "<?= $this->escapeHtml(
-    $this->person->getFullName()
-) ?>"?</p>
+    <p>Are you sure you want to delete "<?= $this->escapeHtml(
+        $this->person->getFullName()
+    ) ?>"?</p>
     <form action="<?php $this->url(
         "person/delete",
         [],
@@ -11,10 +11,10 @@
     ); ?>" method="post">
         <input type="hidden" name="id" value="<?= $this->escapeHtmlAttr(
             $this->person->getId()
-        ) ?>" />
+        ) ?>"/>
         <div class="mt-2">
-            <input class="btn btn-default" type="submit" name="confirm" value="Cancel" />
-            <input class="btn btn-danger" type="submit" name="confirm" value="Delete" />
+            <input class="btn btn-default" type="submit" name="confirm" value="Cancel"/>
+            <input class="btn btn-danger" type="submit" name="confirm" value="Delete"/>
         </div>
     </form>
 </div>

@@ -8,10 +8,9 @@ $file = $form->get("file");
 $file->setAttribute("class", "form-control");
 //$birthday->getFieldsetElement()->setAttribute('class', 'form-control d-flex');
 
-
 // This provides CSS classes for the submit button:
-$submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-primary');
+$submit = $form->get("submit");
+$submit->setAttribute("class", "btn btn-primary");
 
 //$form->setAttribute('action', $this->url('person/add', ['action' => 'add']));
 $form->prepare();
@@ -19,3 +18,4 @@ $form->prepare();
 echo $this->form()->openTag($this->form);
 echo $this->formCollection($this->form);
 echo $this->form()->closeTag();
+

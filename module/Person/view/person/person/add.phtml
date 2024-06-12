@@ -1,10 +1,10 @@
 <h1>Add Person</h1>
 
 <?php
-
 $form = $this->form;
-$form->setAttribute('action', $this->url('person/add', [], true));
-echo $this->partial('person/person/form', [
-    'form' => $form,
-    'submitLabel' => 'Add',
+$form->setAttribute("action", $this->url("person/add", [], true));
+echo $this->partial("person/person/form", [
+    "form" => $form,
+    "submitLabel" => "Add",
 ]);
+

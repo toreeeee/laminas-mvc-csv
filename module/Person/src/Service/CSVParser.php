@@ -17,7 +17,7 @@ class CSVParser implements TableFileParserInterface
 
     /**
      * @param array<RowValidatorInterface> $rowValidators
-     * @param string $delimiter
+     * @param string                       $delimiter
      * @throws Exception
      */
     public function __construct(array $rowValidators, string $delimiter = ":")

@@ -11,11 +11,6 @@ class CSVEncoderTest extends TestCase
 {
     private CSVEncoder $encoder;
 
-    protected function setUp(): void
-    {
-        $this->encoder = new CSVEncoder();
-    }
-
     public function testEncodeWithValidInput()
     {
         $encoded = $this->encoder->encode(
@@ -34,5 +29,10 @@ class CSVEncoderTest extends TestCase
             ["first", "second", "third"],
             [new CSVRow(["hello", "hello", "hello", "hello"])]
         );
+    }
+
+    protected function setUp(): void
+    {
+        $this->encoder = new CSVEncoder();
     }
 }

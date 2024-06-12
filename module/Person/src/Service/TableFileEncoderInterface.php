@@ -5,7 +5,7 @@ namespace Person\Service;
 interface TableFileEncoderInterface
 {
     /**
-     * @param array<string> $headings
+     * @param array<string>            $headings
      * @param array<TableRowInterface> $rows
      * @return string
      */

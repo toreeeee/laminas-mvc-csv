@@ -15,7 +15,7 @@ class TableFile
     private array $headings;
 
     /**
-     * @param array<string> $headings
+     * @param array<string>            $headings
      * @param array<TableRowInterface> $rows
      */
     public function __construct(array $headings, array $rows)
