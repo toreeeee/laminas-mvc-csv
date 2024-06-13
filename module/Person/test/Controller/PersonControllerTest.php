@@ -37,7 +37,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerClass('PersonController');
         $this->assertMatchedRouteName('person/add');
     }
-    
+
     public function testImportActionCanBeAccessed(): void
     {
         $this->dispatch('/person/import', 'POST');
@@ -61,7 +61,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
     public function testEditActionCanBeAccessed(): void
     {
         $this->command->expects($this->once())->method("updatePerson")->with($this->isInstanceOf(Person::class));
-        $this->repository->expects($this->once())->method("getById")->with(1);
+        $this->repository->expects($this->once())->method("findById")->with(1);
 
         $postData = [
             "id" => "1",
@@ -80,7 +80,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
     public function testDeleteActionCanBeAccessed(): void
     {
-        $this->repository->expects($this->once())->method("getById")->with(1);
+        $this->repository->expects($this->once())->method("findById")->with(1);
         $this->command->expects($this->once())->method("deletePerson")->with($this->isInstanceOf(Person::class));
 
         $postData = [
@@ -101,7 +101,7 @@ class PersonControllerTest extends AbstractHttpControllerTestCase
 
     public function testDeleteActionRequireConfirm(): void
     {
-        $this->repository->expects($this->once())->method("getById")->with(1);
+        $this->repository->expects($this->once())->method("findById")->with(1);
         $this->command->expects($this->never())->method("deletePerson")->with($this->isInstanceOf(Person::class));
 
         $postData = [
